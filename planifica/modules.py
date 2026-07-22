@@ -1,73 +1,75 @@
-"""Navegación y ayuda operativa por módulo (qué completar, no guion de charla)."""
+"""Navegación y ayuda: primer PEI desde cero (club / federación / asociación)."""
 
 from __future__ import annotations
 
+# Orden pedagógico: partimos de cero → armamos el PEI → al final un proyecto opcional.
 MODULE_ORDER: list[tuple[str, str]] = [
     ("organizacion", "1 · Organización"),
-    ("pei", "2 · Plan Estratégico Institucional"),
-    ("proyectos", "3 · Gestión de proyectos"),
-    ("dafo", "4 · Análisis DAFO"),
-    ("cimientos", "5 · Visión, misión y valores"),
-    ("prioridades", "6 · Prioridades y objetivos SMART"),
-    ("acciones", "7 · Plan de acción"),
-    ("rendimiento", "8 · Rendimiento y KPI"),
-    ("personas", "9 · Personas y voluntarios"),
+    ("pei", "2 · Tu primer PEI"),
+    ("dafo", "3 · Análisis DAFO"),
+    ("cimientos", "4 · Visión, misión y valores"),
+    ("prioridades", "5 · Prioridades y objetivos"),
+    ("acciones", "6 · Plan de acción"),
+    ("rendimiento", "7 · Indicadores (KPI)"),
+    ("personas", "8 · Personas y voluntarios"),
+    ("proyectos", "9 · Primer proyecto (opcional)"),
     ("resumen", "10 · Resumen y exportación"),
 ]
 
 MODULE_HELP: dict[str, str] = {
     "organizacion": (
-        "Completá los datos identificatorios de la federación, club o asociación. "
-        "Se usan en todas las exportaciones."
+        "Empezá por identificar la institución: club, federación, liga o asociación. "
+        "Todavía no hace falta tener un plan escrito: este sistema lo construye con ustedes."
     ),
     "pei": (
-        "Definí el Plan Estratégico Institucional (PEI): nombre, período, versión y aprobación. "
-        "Es el documento marco al que se alinean proyectos, acciones e indicadores."
-    ),
-    "proyectos": (
-        "Registrá un proyecto concreto (torneo, campus, campaña) y marcá el checklist antes de iniciarlo. "
-        "Cada proyecto debe alinearse al Plan Estratégico Institucional."
+        "Acá nace el primer Plan Estratégico Institucional. "
+        "Definí nombre, período y quién lo aprobará cuando esté listo (comité o asamblea)."
     ),
     "dafo": (
-        "Listá fortalezas y debilidades internas, oportunidades y amenazas externas. "
-        "Este análisis orienta prioridades y objetivos del PEI."
+        "Antes de decidir a dónde van: miren dónde están. "
+        "Fortalezas y debilidades internas; oportunidades y amenazas del entorno."
     ),
     "cimientos": (
-        "Redactá visión (a dónde apuntamos), misión (para qué existimos) y valores (cómo actuamos). "
-        "Son la base del Plan Estratégico Institucional."
+        "Redactá por primera vez visión (a dónde quieren llegar), misión (para qué existen) "
+        "y valores (cómo trabajan). Sin esto no hay PEI."
     ),
     "prioridades": (
-        "Elegí entre 4 y 6 áreas de foco del PEI y formulá objetivos SMART (medibles y con plazo)."
+        "Elegí entre 4 y 6 focos para los próximos años y formular objetivos SMART "
+        "(medibles y con plazo)."
     ),
     "acciones": (
-        "Agregá filas con acciones, responsable, plazo, KPI y recursos. "
-        "Podés sumar o quitar filas en la tabla."
+        "Convertí los objetivos en acciones concretas: qué, quién, cuándo, con qué recursos y KPI."
     ),
     "rendimiento": (
-        "Definí indicadores ligados a los objetivos del PEI y cuándo informar al comité ejecutivo."
+        "Definí cómo van a saber si el PEI avanza: indicadores e informes al comité."
     ),
     "personas": (
-        "Describí roles, formación, voluntariado y reconocimiento. "
-        "Opcional: usos de tecnología e IA en la gestión."
+        "El PEI se ejecuta con personas: roles, formación y voluntariado."
+    ),
+    "proyectos": (
+        "Opcional. Cuando el PEI ya tiene rumbo, podés registrar un primer proyecto "
+        "(torneo, campus, campaña) que nazca de ese plan — no al revés."
     ),
     "resumen": (
-        "Revisá el Plan Estratégico Institucional, descargá Markdown o JSON y compartilo con comité o asamblea. "
-        "El JSON sirve de respaldo para importar en otra sesión."
+        "Revisá el primer PEI completo, descargalo y presentalo al comité o a la asamblea para su adopción."
     ),
 }
 
 HOW_IT_WORKS = """
-**Flujo recomendado**
+**Para instituciones que todavía no tienen plan**
 
-1. **Crear cuenta** (una por federación, club o consultora).
-2. **Nuevo plan** — en blanco o con la **demo** precargada para practicar.
-3. Recorrer los **módulos 1 a 8** en la barra lateral; el avance se guarda al cambiar de módulo o con **Guardar ahora**.
-4. En **Resumen**, exportar el plan y usarlo en reuniones de planificación y presupuesto anual.
+Muchos clubes y asociaciones **no tienen PEI**: solo actividades, torneos e improvisación.
+PlanificaDeporte guía el **primer Plan Estratégico Institucional** paso a paso.
 
-**Para que el plan funcione en la organización**
+1. Crear cuenta de la organización.
+2. **Nuevo PEI** (en blanco o con demo de ejemplo).
+3. Completar módulos **1 → 8** (quiénes somos, DAFO, visión, objetivos, acciones, KPI, personas).
+4. El módulo **9** (proyecto) es opcional y va **después** del PEI.
+5. En **Resumen**, exportar y llevar el documento a aprobación.
 
-- Aprobá visión, misión y objetivos en comité directivo.
-- Asigná responsables en cada fila del plan de acción.
-- Revisá KPI con la frecuencia que definiste (informe mensual + evaluación anual, según COI).
-- Actualizá el plan en el sistema cuando cambien prioridades o finalice el horizonte.
+**Después de aprobarlo**
+
+- Asignar responsables en el plan de acción.
+- Revisar indicadores con la frecuencia acordada.
+- Actualizar el PEI cada año (plan operativo) y al cerrar el horizonte.
 """

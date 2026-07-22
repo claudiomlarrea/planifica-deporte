@@ -9,8 +9,9 @@ BRAND_GREEN = "#044A30"
 BORDER_SOFT = "#B8D4C8"
 
 APP_NAME = "PlanificaDeporte"
-TAGLINE = "Plan estratégico para federaciones, clubes y organizaciones deportivas"
+TAGLINE = "Tu primer Plan Estratégico Institucional — clubes, federaciones y asociaciones"
 FOOTER = "Observatorio de Inteligencia Artificial · Metodología COI (2020)"
+
 
 
 def inject_theme() -> None:

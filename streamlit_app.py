@@ -99,12 +99,12 @@ def sidebar_nav() -> None:
     st.sidebar.title("Navegación")
     if st.session_state.account:
         st.sidebar.success(f"Organización / cuenta: **{st.session_state.account['name']}**")
-        if st.sidebar.button("Mis planes estratégicos", use_container_width=True):
+        if st.sidebar.button("Mis PEI", use_container_width=True):
             save_current_plan()
             st.session_state.page = "panel"
             st.session_state.plan_id = None
             st.rerun()
-        if st.sidebar.button("Nuevo plan", use_container_width=True):
+        if st.sidebar.button("Crear primer PEI / nuevo", use_container_width=True):
             save_current_plan()
             st.session_state.page = "new_plan"
             st.rerun()
@@ -151,10 +151,11 @@ def sidebar_nav() -> None:
 
 
 def page_home() -> None:
-    st.subheader("Construí el plan que impulsa a tu organización")
+    st.subheader("Tu primer Plan Estratégico Institucional")
     st.markdown(
-        "Sistema paso a paso para federaciones, clubes y asociaciones "
-        "(Manual COI, Unidades 53–57): datos, DAFO, objetivos, acciones, indicadores y personas."
+        "Pensado para clubes, federaciones y asociaciones que **aún no tienen PEI**. "
+        "El sistema guía desde cero: quiénes son, dónde están, a dónde quieren ir, "
+        "qué van a hacer y cómo van a medirlo (Manual COI, Unidades 53–57)."
     )
     if st.button("Entrar / crear cuenta", type="primary"):
         st.session_state.page = "auth"
@@ -209,11 +210,11 @@ def page_panel() -> None:
         st.rerun()
         return
 
-    st.subheader("Planes estratégicos")
+    st.subheader("Planes Estratégicos Institucionales")
     c1, c2, c3 = st.columns(3)
     plans = list_plans(acc["id"])
     with c1:
-        metric_card("Planes", str(len(plans)))
+        metric_card("PEI", str(len(plans)))
     with c2:
         avg = (
             sum(total_completion(p["payload"]) for p in plans) / len(plans) * 100
@@ -222,23 +223,26 @@ def page_panel() -> None:
         )
         metric_card("Avance promedio", f"{avg:.0f}%")
     with c3:
-        if st.button("Nuevo plan", use_container_width=True):
+        if st.button("Crear PEI", use_container_width=True):
             st.session_state.page = "new_plan"
             st.rerun()
 
     st.markdown("#### Importar respaldo")
     up = st.file_uploader("Archivo .json de PlanificaDeporte", type=["json"])
-    if up and st.button("Importar plan"):
+    if up and st.button("Importar PEI"):
         try:
             title, payload = parse_plan_backup(up.getvalue())
             create_plan(acc["id"], title, payload)
-            st.success("Plan importado.")
+            st.success("PEI importado.")
             st.rerun()
         except Exception as exc:
             st.error(str(exc))
 
     if not plans:
-        st.warning("Todavía no hay planes. Creá uno nuevo o cargá la demo desde «Nuevo plan».")
+        st.warning(
+            "Todavía no hay un PEI. Creá el **primer Plan Estratégico Institucional** "
+            "o cargá la demo para practicar."
+        )
         return
 
     for plan in plans:
@@ -283,20 +287,27 @@ def page_new_plan() -> None:
         st.rerun()
         return
 
-    st.subheader("Nuevo plan estratégico")
-    title = st.text_input("Título del plan", placeholder="Plan estratégico 2026–2030")
+    st.subheader("Crear el primer PEI")
+    st.caption(
+        "Partimos de cero: la institución todavía no tiene plan estratégico. "
+        "Vas a armar el documento marco (PEI) y recién después, si querés, un proyecto concreto."
+    )
+    title = st.text_input(
+        "Nombre tentativo del PEI",
+        placeholder="Plan Estratégico Institucional 2026–2030",
+    )
     c1, c2 = st.columns(2)
     with c1:
-        if st.button("Plan en blanco", type="primary", use_container_width=True):
+        if st.button("Empezar PEI en blanco", type="primary", use_container_width=True):
             if not title.strip():
-                st.error("Indicá un título.")
+                st.error("Indicá un nombre para el PEI.")
             else:
                 plan = create_plan(acc["id"], title, empty_plan_payload())
                 load_plan_into_session(plan["id"])
                 st.rerun()
     with c2:
         if st.button("Cargar demo (Federación de Judo)", use_container_width=True):
-            demo_title = title.strip() or "Demo — Federación de Judo"
+            demo_title = title.strip() or "PEI demo — Federación de Judo 2026–2030"
             plan = create_plan(acc["id"], demo_title, demo_plan_payload())
             load_plan_into_session(plan["id"])
             st.rerun()
@@ -334,10 +345,10 @@ def page_edit() -> None:
     pct = int(total_completion(payload) * 100)
 
     st.session_state.draft_title = st.text_input(
-        "Plan Estratégico Institucional",
+        "Nombre del PEI en construcción",
         value=st.session_state.draft_title,
         key="plan_title_input",
-        placeholder="Ej.: Plan Estratégico Institucional 2026–2030",
+        placeholder="Ej.: Primer Plan Estratégico Institucional 2026–2030",
     )
 
     c1, c2, c3 = st.columns(3)
@@ -402,13 +413,17 @@ def page_edit() -> None:
         org["contacto_email"] = st.text_input("Correo de contacto", org.get("contacto_email", ""))
 
     elif mod == "pei":
-        st.markdown("### Plan Estratégico Institucional")
+        st.markdown("### Tu primer Plan Estratégico Institucional")
+        st.info(
+            "Partimos de que la institución **todavía no tiene PEI**. "
+            "Este módulo inicia el documento que van a construir juntos."
+        )
         _module_help("pei")
         pei = payload.setdefault("pei", {})
         if not pei.get("nombre") and st.session_state.draft_title:
             pei["nombre"] = st.session_state.draft_title
         pei["nombre"] = st.text_input(
-            "Nombre del PEI",
+            "Nombre del primer PEI",
             pei.get("nombre", ""),
             placeholder="Plan Estratégico Institucional 2026–2030",
         )
@@ -431,24 +446,31 @@ def page_edit() -> None:
             int(org.get("horizonte_anios") or 5),
         )
         pei["aprobado_por"] = st.text_input(
-            "Aprobado por",
+            "Quién lo aprobará cuando esté listo",
             pei.get("aprobado_por", ""),
-            placeholder="Comité ejecutivo / Asamblea",
+            placeholder="Comité ejecutivo / Asamblea (aún pendiente de aprobación)",
         )
         pei["fecha_aprobacion"] = st.text_input(
-            "Fecha de aprobación",
+            "Fecha de aprobación (completar cuando lo adopten)",
             pei.get("fecha_aprobacion", ""),
-            placeholder="AAAA-MM-DD",
+            placeholder="AAAA-MM-DD — dejar vacío si todavía no está aprobado",
         )
 
     elif mod == "proyectos":
-        st.markdown("### Gestión de proyectos (Unidad 53 COI)")
+        st.markdown("### Primer proyecto a partir del PEI (opcional)")
+        st.warning(
+            "Este paso es **después** del PEI. "
+            "No se trata de inventar proyectos sueltos: primero el plan, luego un proyecto concreto que lo ejecute."
+        )
         _module_help("proyectos")
         pei = payload.get("pei") or {}
         pei_nombre = pei.get("nombre") or st.session_state.draft_title or "—"
-        st.info(f"**PEI de referencia:** {pei_nombre}")
+        st.caption(f"PEI en construcción: **{pei_nombre}**")
         pg = payload.setdefault("proyecto_guia", {})
-        pg["nombre"] = st.text_input("Proyecto emblemático (ej. torneo, campus)", pg.get("nombre", ""))
+        pg["nombre"] = st.text_input(
+            "Nombre del primer proyecto (ej. torneo, campus, campaña)",
+            pg.get("nombre", ""),
+        )
         pg["objetivo"] = st.text_area("Objetivo del proyecto", pg.get("objetivo", ""), height=80)
         c1, c2 = st.columns(2)
         with c1:
@@ -457,17 +479,20 @@ def page_edit() -> None:
             pg["fin"] = st.text_input("Finalización", pg.get("fin", ""))
         pg["gestor"] = st.text_input("Gestor del proyecto", pg.get("gestor", ""))
         pg["vinculo_estrategico"] = st.text_area(
-            "Vínculo con el Plan Estratégico Institucional",
+            "¿A qué prioridad u objetivo del PEI contribuye?",
             pg.get("vinculo_estrategico", ""),
             height=80,
-            placeholder="Prioridad u objetivo del PEI al que contribuye este proyecto",
+            placeholder="Ej.: Prioridad «crecimiento de la base» — objetivo +5% afiliados",
         )
         pg["criterios_exito"] = st.text_area("Criterios de éxito (medibles)", pg.get("criterios_exito", ""), height=80)
         pg["presupuesto"] = st.text_input("Presupuesto estimado", pg.get("presupuesto", ""))
 
-        st.markdown("#### Checklist previo al proyecto (manual COI)")
+        st.markdown("#### Checklist antes de lanzar el proyecto (manual COI)")
         pq = payload.setdefault("proyecto_preguntas", {})
-        pq["alineacion_mision"] = st.checkbox("¿Alineado con misión y objetivos del PEI?", pq.get("alineacion_mision", False))
+        pq["alineacion_mision"] = st.checkbox(
+            "¿Está alineado con la visión, misión y objetivos del PEI que acaban de definir?",
+            pq.get("alineacion_mision", False),
+        )
         pq["normativa"] = st.checkbox("¿Conforme a estatuto y normativas?", pq.get("normativa", False))
         pq["recursos"] = st.checkbox("¿Recursos humanos y materiales suficientes?", pq.get("recursos", False))
         pq["medicion"] = st.checkbox("¿Se podrán medir los resultados?", pq.get("medicion", False))

@@ -92,11 +92,19 @@ def demo_plan_payload() -> dict:
     )
     data["pei"].update(
         {
-            "nombre": "Plan Estratégico Institucional 2026–2030",
+            "nombre": "Primer Plan Estratégico Institucional 2026–2030",
             "periodo": "2026–2030",
             "version": "1.0",
-            "aprobado_por": "Comité ejecutivo (demo)",
+            "aprobado_por": "Pendiente — Asamblea (demo)",
             "fecha_aprobacion": "",
+        }
+    )
+    data["proyecto_guia"].update(
+        {
+            "nombre": "Circuito nacional de torneos infantiles",
+            "objetivo": "Duplicar participantes sub-13 en tres años.",
+            "vinculo_estrategico": "Prioridad del PEI: crecimiento de la base.",
+            "criterios_exito": "Nº de judocas, clubes participantes, satisfacción.",
         }
     )
     data["proyecto_guia"].update(

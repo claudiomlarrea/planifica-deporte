@@ -102,49 +102,48 @@ def plan_to_html(title: str, payload: dict[str, Any]) -> str:
     return f"""
     <div class="pd-doc">
       <div class="pd-doc-header">
-        <div class="pd-doc-badge">Plan Estratégico Institucional</div>
+        <div class="pd-doc-badge">Primer Plan Estratégico Institucional</div>
         <h2>{_esc(pei_titulo)}</h2>
       </div>
       {meta}
       {pei_block}
-      <h3>1 · Gestión de proyectos</h3>
-      {_block("Proyecto emblemático", pg.get("nombre"))}
-      {_block("Objetivo", pg.get("objetivo"))}
-      {_block("Vínculo con el PEI", pg.get("vinculo_estrategico"))}
-      {_block("Criterios de éxito", pg.get("criterios_exito"))}
-      <h3>2 · Análisis DAFO</h3>
+      <h3>1 · Análisis DAFO</h3>
       <div class="pd-grid-2">
         {_block("Fortalezas", dafo.get("fortalezas"))}
         {_block("Debilidades", dafo.get("debilidades"))}
         {_block("Oportunidades", dafo.get("oportunidades"))}
         {_block("Amenazas", dafo.get("amenazas"))}
       </div>
-      <h3>3 · Cimientos estratégicos</h3>
+      <h3>2 · Visión, misión y valores</h3>
       {_block("Visión", cim.get("vision"))}
       {_block("Misión", cim.get("mision"))}
       {_block("Valores", cim.get("valores"))}
-      <h3>4 · Prioridades y objetivos</h3>
+      <h3>3 · Prioridades y objetivos</h3>
       {_block("Prioridades estratégicas", payload.get("prioridades"))}
       {_block("Objetivos SMART", payload.get("objetivos_smart"))}
-      <h3>5 · Plan de acción</h3>
+      <h3>4 · Plan de acción</h3>
       {acciones_html}
-      <h3>6 · Gestión del rendimiento</h3>
+      <h3>5 · Indicadores y evaluación</h3>
       {_block("Indicadores (KPI)", rend.get("kpis"))}
       {_block("Frecuencia de evaluación", rend.get("frecuencia_evaluacion"))}
       {_block("Informes al comité", rend.get("informes_comite"))}
-      <h3>7 · Recursos humanos</h3>
+      <h3>6 · Personas y voluntarios</h3>
       {_block("Roles clave", rrhh.get("roles_clave"))}
       {_block("Brechas de formación", rrhh.get("brechas_formacion"))}
       {_block("Reclutamiento", rrhh.get("reclutamiento"))}
-      <h3>8 · Voluntarios y formación</h3>
-      {_block("Necesidades", vol.get("necesidades"))}
+      {_block("Necesidades de voluntariado", vol.get("necesidades"))}
       {_block("Motivaciones", vol.get("motivaciones"))}
       {_block("Formación", vol.get("formacion"))}
       {_block("Reconocimiento", vol.get("reconocimiento"))}
-      <h3>9 · Tecnología e IA</h3>
+      <h3>7 · Primer proyecto derivado del PEI (opcional)</h3>
+      {_block("Proyecto", pg.get("nombre"))}
+      {_block("Objetivo", pg.get("objetivo"))}
+      {_block("Contribuye al PEI en", pg.get("vinculo_estrategico"))}
+      {_block("Criterios de éxito", pg.get("criterios_exito"))}
+      <h3>8 · Tecnología e IA</h3>
       {_block("Notas", tech.get("notas_ia"))}
       <div class="pd-doc-footer">
-        Manual de Administración Deportiva, COI (2020) · Unidades 53–57 · Generado con PlanificaDeporte
+        Primer PEI generado con PlanificaDeporte · Manual COI (2020), Unidades 53–57
       </div>
     </div>
     """
@@ -163,7 +162,7 @@ def plan_to_markdown(title: str, payload: dict[str, Any]) -> str:
     pei_titulo = pei.get("nombre") or title
 
     lines = [
-        f"# Plan Estratégico Institucional — {pei_titulo}",
+        f"# Primer Plan Estratégico Institucional — {pei_titulo}",
         "",
         f"**Organización:** {org.get('nombre', '')}",
         f"**Tipo:** {org.get('tipo', '')}",
@@ -171,37 +170,31 @@ def plan_to_markdown(title: str, payload: dict[str, Any]) -> str:
         + (f" · **Provincia:** {org.get('provincia')}" if org.get("provincia") else ""),
         f"**Horizonte:** {org.get('horizonte_anios', '')} años",
         "",
-        "## Plan Estratégico Institucional",
+        "## Identidad del PEI",
         _line("Nombre del PEI", pei_titulo),
         _line("Período", pei.get("periodo", "")),
         _line("Versión", pei.get("version", "")),
-        _line("Aprobado por", pei.get("aprobado_por", "")),
+        _line("Quién lo aprobará", pei.get("aprobado_por", "")),
         _line("Fecha de aprobación", pei.get("fecha_aprobacion", "")),
         "",
         "---",
         "",
-        "## 1. Gestión de proyectos (referencia)",
-        _line("Proyecto emblemático", pg.get("nombre", "")),
-        _line("Objetivo", pg.get("objetivo", "")),
-        _line("Vínculo con el PEI", pg.get("vinculo_estrategico", "")),
-        _line("Criterios de éxito", pg.get("criterios_exito", "")),
-        "",
-        "## 2. Análisis DAFO",
+        "## 1. Análisis DAFO",
         _line("Fortalezas", dafo.get("fortalezas", "")),
         _line("Debilidades", dafo.get("debilidades", "")),
         _line("Oportunidades", dafo.get("oportunidades", "")),
         _line("Amenazas", dafo.get("amenazas", "")),
         "",
-        "## 3. Cimientos estratégicos",
+        "## 2. Visión, misión y valores",
         _line("Visión", cim.get("vision", "")),
         _line("Misión", cim.get("mision", "")),
         _line("Valores", cim.get("valores", "")),
         "",
-        "## 4. Prioridades y objetivos",
+        "## 3. Prioridades y objetivos",
         _line("Prioridades estratégicas", payload.get("prioridades", "")),
         _line("Objetivos SMART", payload.get("objetivos_smart", "")),
         "",
-        "## 5. Plan de acción",
+        "## 4. Plan de acción",
     ]
 
     acciones = payload.get("acciones") or []
@@ -218,29 +211,32 @@ def plan_to_markdown(title: str, payload: dict[str, Any]) -> str:
 
     lines.extend(
         [
-            "## 6. Gestión del rendimiento",
+            "## 5. Indicadores y evaluación",
             _line("Indicadores (KPI)", rend.get("kpis", "")),
             _line("Frecuencia de evaluación", rend.get("frecuencia_evaluacion", "")),
             _line("Informes al comité", rend.get("informes_comite", "")),
             "",
-            "## 7. Recursos humanos",
+            "## 6. Personas y voluntarios",
             _line("Roles clave", rrhh.get("roles_clave", "")),
             _line("Brechas de formación", rrhh.get("brechas_formacion", "")),
             _line("Reclutamiento", rrhh.get("reclutamiento", "")),
-            "",
-            "## 8. Voluntarios y formación",
-            _line("Necesidades", vol.get("necesidades", "")),
+            _line("Necesidades de voluntariado", vol.get("necesidades", "")),
             _line("Motivaciones", vol.get("motivaciones", "")),
             _line("Formación", vol.get("formacion", "")),
             _line("Reconocimiento", vol.get("reconocimiento", "")),
             "",
-            "## 9. Tecnología e IA (opcional)",
+            "## 7. Primer proyecto derivado del PEI (opcional)",
+            _line("Proyecto", pg.get("nombre", "")),
+            _line("Objetivo", pg.get("objetivo", "")),
+            _line("Contribuye al PEI en", pg.get("vinculo_estrategico", "")),
+            _line("Criterios de éxito", pg.get("criterios_exito", "")),
+            "",
+            "## 8. Tecnología e IA (opcional)",
             _line("Notas", tech.get("notas_ia", "")),
             "",
             "---",
             "",
-            "_Referencia: Manual de Administración Deportiva, COI (2020), Unidades 53–57._",
-            "_Generado con PlanificaDeporte._",
+            "_Primer PEI generado con PlanificaDeporte · Manual COI (2020), Unidades 53–57._",
         ]
     )
     return "\n".join(lines)
