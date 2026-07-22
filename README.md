@@ -15,8 +15,10 @@ streamlit run app.py
 
 ## Streamlit Cloud
 
+- Repo: https://github.com/claudiomlarrea/planifica-deporte
 - Main file: `app.py`
-- Python: 3.9+
+- Deploy: https://share.streamlit.io/deploy?repository=claudiomlarrea/planifica-deporte&branch=main&mainModule=app.py
+- App (tras el deploy): https://planifica-deporte.streamlit.app
 
 ## Uso rápido (clase / demo)
 
