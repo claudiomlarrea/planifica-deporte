@@ -21,7 +21,6 @@ from planifica.database import (
     register_account,
     update_plan,
 )
-from planifica.db_backend import is_ephemeral_storage, using_postgres
 from planifica.export import parse_plan_backup, plan_backup_bytes, plan_to_docx, plan_to_html, plan_to_markdown
 from planifica.geo import PAISES, PROVINCIAS_ARGENTINA, region_label
 from planifica.modules import HOW_IT_WORKS, MODULE_HELP, MODULE_ORDER
@@ -149,13 +148,6 @@ def sidebar_nav() -> None:
 
     st.sidebar.divider()
     st.sidebar.caption(f"**{get_usage_count()}** sesiones registradas en PlanificaDeporte")
-    if is_ephemeral_storage():
-        st.sidebar.error(
-            "Almacenamiento temporal: un redeploy borra los PEI. "
-            "Descargá Word/JSON ahora y configurá DATABASE_URL (Neon) en Secrets."
-        )
-    elif using_postgres():
-        st.sidebar.caption("Datos persistentes (PostgreSQL)")
 
 
 def page_home() -> None:
@@ -219,13 +211,6 @@ def page_panel() -> None:
         return
 
     st.subheader("Planes Estratégicos Institucionales")
-    if is_ephemeral_storage():
-        st.warning(
-            "**Importante:** en Streamlit Cloud sin base de datos externa, "
-            "cada **Reboot / Redeploy** borra los PEI guardados. "
-            "Si tenés un plan cargado, abrilo y descargá **Word** o **JSON** ahora. "
-            "Para que no se pierdan: Settings → Secrets → `DATABASE_URL` (Neon), como en EvaluAR."
-        )
     c1, c2, c3 = st.columns(3)
     plans = list_plans(acc["id"])
     with c1:
