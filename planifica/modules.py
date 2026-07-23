@@ -51,10 +51,10 @@ MODULE_HELP: dict[str, str] = {
         "(torneo, campus, campaña) que nazca de ese plan — no al revés."
     ),
     "resumen": (
-        "Revisá el primer PEI completo, descargalo y presentalo al comité o a la asamblea para su adopción."
+        "Revisá el primer PEI completo. Descargá Word (.docx) para comité/asamblea, "
+        "Markdown o JSON de respaldo."
     ),
 }
-
 HOW_IT_WORKS = """
 **Para instituciones que todavía no tienen plan**
 

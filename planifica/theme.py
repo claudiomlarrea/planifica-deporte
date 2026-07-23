@@ -165,6 +165,26 @@ def inject_theme() -> None:
             color: {BRAND_GREEN};
             font-weight: 600;
         }}
+        .pd-action {{
+            background: #f7fbf9;
+            border: 1px solid {BORDER_SOFT};
+            border-radius: 0.5rem;
+            padding: 0.65rem 0.75rem;
+            margin: 0 0 0.55rem;
+        }}
+        .pd-action-title {{
+            font-weight: 600;
+            color: {BRAND_GREEN};
+            margin-bottom: 0.35rem;
+            font-size: 0.95rem;
+        }}
+        .pd-action-meta {{
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.25rem 0.75rem;
+            font-size: 0.85rem;
+            color: #334155;
+        }}
         .pd-doc-footer {{
             margin-top: 1.25rem;
             padding-top: 0.75rem;

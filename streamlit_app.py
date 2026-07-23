@@ -21,7 +21,7 @@ from planifica.database import (
     register_account,
     update_plan,
 )
-from planifica.export import parse_plan_backup, plan_backup_bytes, plan_to_html, plan_to_markdown
+from planifica.export import parse_plan_backup, plan_backup_bytes, plan_to_docx, plan_to_html, plan_to_markdown
 from planifica.geo import PAISES, PROVINCIAS_ARGENTINA, region_label
 from planifica.modules import HOW_IT_WORKS, MODULE_HELP, MODULE_ORDER
 from planifica.progress import module_completion, total_completion
@@ -250,31 +250,39 @@ def page_panel() -> None:
         org = (plan["payload"].get("org") or {}).get("nombre") or "Sin nombre de org."
         with st.expander(f"**{plan['title']}** · {pct}% · {org}", expanded=False):
             st.caption(f"Actualizado: {plan['updated_at'][:10]} · Estado: {plan['status']}")
-            b1, b2, b3, b4, b5 = st.columns(5)
+            b1, b2, b3, b4, b5, b6 = st.columns(6)
             with b1:
                 if st.button("Editar", key=f"ed_{plan['id']}"):
                     load_plan_into_session(plan["id"])
                     st.rerun()
             with b2:
+                st.download_button(
+                    "Word",
+                    plan_to_docx(plan["title"], plan["payload"]),
+                    file_name=f"{plan['title'][:40]}.docx",
+                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    key=f"docx_{plan['id']}",
+                )
+            with b3:
                 md = plan_to_markdown(plan["title"], plan["payload"])
                 st.download_button(
-                    "Exportar MD",
+                    "Markdown",
                     md.encode("utf-8"),
                     file_name=f"{plan['title'][:40]}.md",
                     key=f"md_{plan['id']}",
                 )
-            with b3:
+            with b4:
                 st.download_button(
-                    "Backup JSON",
+                    "JSON",
                     plan_backup_bytes(plan["title"], plan["payload"]),
                     file_name=f"{plan['title'][:40]}.json",
                     key=f"json_{plan['id']}",
                 )
-            with b4:
+            with b5:
                 if st.button("Duplicar", key=f"dup_{plan['id']}"):
                     duplicate_plan(plan["id"], acc["id"])
                     st.rerun()
-            with b5:
+            with b6:
                 if st.button("Eliminar", key=f"del_{plan['id']}"):
                     delete_plan(plan["id"], acc["id"])
                     st.rerun()
@@ -607,20 +615,29 @@ def page_edit() -> None:
         _module_help("resumen")
         md = plan_to_markdown(st.session_state.draft_title, payload)
         st.markdown(plan_to_html(st.session_state.draft_title, payload), unsafe_allow_html=True)
-        c1, c2 = st.columns(2)
+        safe_name = (st.session_state.draft_title or "PEI")[:50]
+        c1, c2, c3 = st.columns(3)
         with c1:
             st.download_button(
-                "Descargar Markdown",
-                md.encode("utf-8"),
-                file_name=f"{st.session_state.draft_title[:50]}.md",
+                "Descargar Word (.docx)",
+                plan_to_docx(st.session_state.draft_title, payload),
+                file_name=f"{safe_name}.docx",
+                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 type="primary",
                 use_container_width=True,
             )
         with c2:
             st.download_button(
-                "Descargar backup JSON",
+                "Descargar Markdown",
+                md.encode("utf-8"),
+                file_name=f"{safe_name}.md",
+                use_container_width=True,
+            )
+        with c3:
+            st.download_button(
+                "Backup JSON",
                 plan_backup_bytes(st.session_state.draft_title, payload),
-                file_name=f"{st.session_state.draft_title[:50]}.json",
+                file_name=f"{safe_name}.json",
                 use_container_width=True,
             )
         if st.button("Marcar plan como finalizado"):

@@ -68,34 +68,28 @@ def plan_to_html(title: str, payload: dict[str, Any]) -> str:
     """
 
     if acciones:
-        rows = []
+        cards = []
+        n = 0
         for a in acciones:
             if not any(str(a.get(k) or "").strip() for k in ("accion", "responsable", "plazo", "kpi")):
                 continue
-            rows.append(
-                "<tr>"
-                f"<td>{_esc(a.get('prioridad'))}</td>"
-                f"<td>{_esc(a.get('accion'))}</td>"
-                f"<td>{_esc(a.get('responsable'))}</td>"
-                f"<td>{_esc(a.get('plazo'))}</td>"
-                f"<td>{_esc(a.get('kpi'))}</td>"
-                f"<td>{_esc(a.get('estado'))}</td>"
-                "</tr>"
+            n += 1
+            cards.append(
+                f"""
+                <div class="pd-action">
+                  <div class="pd-action-title">{n}. {_esc(a.get('accion'))}</div>
+                  <div class="pd-action-meta">
+                    <span><b>Prioridad:</b> {_esc(a.get('prioridad'))}</span>
+                    <span><b>Responsable:</b> {_esc(a.get('responsable'))}</span>
+                    <span><b>Plazo:</b> {_esc(a.get('plazo'))}</span>
+                    <span><b>KPI:</b> {_esc(a.get('kpi'))}</span>
+                    <span><b>Recursos:</b> {_esc(a.get('recursos'))}</span>
+                    <span><b>Estado:</b> {_esc(a.get('estado'))}</span>
+                  </div>
+                </div>
+                """
             )
-        acciones_html = (
-            """
-            <table class="pd-table">
-              <thead>
-                <tr>
-                  <th>Prioridad</th><th>Acción</th><th>Responsable</th>
-                  <th>Plazo</th><th>KPI</th><th>Estado</th>
-                </tr>
-              </thead>
-              <tbody>
-            """
-            + ("".join(rows) if rows else "<tr><td colspan='6'>Sin acciones registradas.</td></tr>")
-            + "</tbody></table>"
-        )
+        acciones_html = "".join(cards) if cards else "<p class='pd-empty'>Sin acciones registradas.</p>"
     else:
         acciones_html = "<p class='pd-empty'>Sin acciones registradas.</p>"
 
@@ -252,3 +246,129 @@ def parse_plan_backup(raw: bytes) -> tuple[str, dict[str, Any]]:
     if data.get("format") != "planifica-deporte-backup":
         raise ValueError("Archivo no reconocido como respaldo PlanificaDeporte.")
     return str(data.get("title") or "Plan importado"), data.get("payload") or {}
+
+
+def _docx_para(doc, label: str, value: Any) -> None:
+    from docx.shared import Pt
+
+    text = str(value or "").strip() or "—"
+    p = doc.add_paragraph()
+    run = p.add_run(f"{label}: ")
+    run.bold = True
+    run.font.size = Pt(11)
+    body = p.add_run(text)
+    body.font.size = Pt(11)
+
+
+def plan_to_docx(title: str, payload: dict[str, Any]) -> bytes:
+    """Genera un .docx del PEI para descargar en Word."""
+    from io import BytesIO
+
+    from docx import Document
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
+    from docx.shared import Pt, RGBColor
+
+    org = payload.get("org") or {}
+    pei = payload.get("pei") or {}
+    pg = payload.get("proyecto_guia") or {}
+    dafo = payload.get("dafo") or {}
+    cim = payload.get("cimientos") or {}
+    rend = payload.get("rendimiento") or {}
+    rrhh = payload.get("rrhh") or {}
+    vol = payload.get("voluntarios") or {}
+    tech = payload.get("tecnologia") or {}
+    pei_titulo = pei.get("nombre") or title
+    pais = org.get("pais") or org.get("region") or "—"
+    provincia = org.get("provincia") or ""
+    ubicacion = f"{pais}" + (f" · {provincia}" if provincia else "")
+
+    doc = Document()
+    h = doc.add_heading(pei_titulo, level=0)
+    h.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    for run in h.runs:
+        run.font.color.rgb = RGBColor(0x04, 0x4A, 0x30)
+
+    sub = doc.add_paragraph("Primer Plan Estratégico Institucional · PlanificaDeporte")
+    for run in sub.runs:
+        run.italic = True
+        run.font.size = Pt(10)
+
+    doc.add_heading("Organización", level=1)
+    _docx_para(doc, "Nombre", org.get("nombre"))
+    _docx_para(doc, "Tipo", org.get("tipo"))
+    _docx_para(doc, "Ubicación", ubicacion)
+    _docx_para(doc, "Horizonte", f"{org.get('horizonte_anios', '')} años")
+
+    doc.add_heading("Identidad del PEI", level=1)
+    _docx_para(doc, "Nombre", pei_titulo)
+    _docx_para(doc, "Período", pei.get("periodo"))
+    _docx_para(doc, "Versión", pei.get("version"))
+    _docx_para(doc, "Quién lo aprobará", pei.get("aprobado_por"))
+    _docx_para(doc, "Fecha de aprobación", pei.get("fecha_aprobacion"))
+
+    doc.add_heading("1. Análisis DAFO", level=1)
+    _docx_para(doc, "Fortalezas", dafo.get("fortalezas"))
+    _docx_para(doc, "Debilidades", dafo.get("debilidades"))
+    _docx_para(doc, "Oportunidades", dafo.get("oportunidades"))
+    _docx_para(doc, "Amenazas", dafo.get("amenazas"))
+
+    doc.add_heading("2. Visión, misión y valores", level=1)
+    _docx_para(doc, "Visión", cim.get("vision"))
+    _docx_para(doc, "Misión", cim.get("mision"))
+    _docx_para(doc, "Valores", cim.get("valores"))
+
+    doc.add_heading("3. Prioridades y objetivos", level=1)
+    _docx_para(doc, "Prioridades", payload.get("prioridades"))
+    _docx_para(doc, "Objetivos SMART", payload.get("objetivos_smart"))
+
+    doc.add_heading("4. Plan de acción", level=1)
+    acciones = payload.get("acciones") or []
+    n = 0
+    for a in acciones:
+        if not any(str(a.get(k) or "").strip() for k in ("accion", "responsable", "plazo", "kpi")):
+            continue
+        n += 1
+        doc.add_heading(f"{n}. {a.get('accion') or 'Acción'}", level=2)
+        _docx_para(doc, "Prioridad", a.get("prioridad"))
+        _docx_para(doc, "Responsable", a.get("responsable"))
+        _docx_para(doc, "Plazo", a.get("plazo"))
+        _docx_para(doc, "KPI", a.get("kpi"))
+        _docx_para(doc, "Recursos", a.get("recursos"))
+        _docx_para(doc, "Estado", a.get("estado"))
+    if n == 0:
+        doc.add_paragraph("Sin acciones registradas.")
+
+    doc.add_heading("5. Indicadores y evaluación", level=1)
+    _docx_para(doc, "KPI", rend.get("kpis"))
+    _docx_para(doc, "Frecuencia", rend.get("frecuencia_evaluacion"))
+    _docx_para(doc, "Informes al comité", rend.get("informes_comite"))
+
+    doc.add_heading("6. Personas y voluntarios", level=1)
+    _docx_para(doc, "Roles clave", rrhh.get("roles_clave"))
+    _docx_para(doc, "Brechas de formación", rrhh.get("brechas_formacion"))
+    _docx_para(doc, "Reclutamiento", rrhh.get("reclutamiento"))
+    _docx_para(doc, "Necesidades de voluntariado", vol.get("necesidades"))
+    _docx_para(doc, "Motivaciones", vol.get("motivaciones"))
+    _docx_para(doc, "Formación", vol.get("formacion"))
+    _docx_para(doc, "Reconocimiento", vol.get("reconocimiento"))
+
+    doc.add_heading("7. Primer proyecto (opcional)", level=1)
+    _docx_para(doc, "Proyecto", pg.get("nombre"))
+    _docx_para(doc, "Objetivo", pg.get("objetivo"))
+    _docx_para(doc, "Contribuye al PEI en", pg.get("vinculo_estrategico"))
+    _docx_para(doc, "Criterios de éxito", pg.get("criterios_exito"))
+
+    if (tech.get("notas_ia") or "").strip():
+        doc.add_heading("8. Tecnología e IA", level=1)
+        _docx_para(doc, "Notas", tech.get("notas_ia"))
+
+    foot = doc.add_paragraph()
+    fr = foot.add_run(
+        "Generado con PlanificaDeporte · Manual de Administración Deportiva, COI (2020), Unidades 53–57."
+    )
+    fr.italic = True
+    fr.font.size = Pt(9)
+
+    buf = BytesIO()
+    doc.save(buf)
+    return buf.getvalue()
