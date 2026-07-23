@@ -20,7 +20,21 @@ streamlit run app.py
 - Deploy: https://share.streamlit.io/deploy?repository=claudiomlarrea/planifica-deporte&branch=main&mainModule=app.py
 - App (tras el deploy): https://planifica-deporte.streamlit.app
 
-## Uso rápido (clase / demo)
+## Persistencia en Streamlit Cloud
+
+Sin `DATABASE_URL`, los PEI se guardan en SQLite local del contenedor y **se borran en cada redeploy**.
+
+1. Creá una base en [Neon](https://neon.tech) (o reutilizá el proyecto de EvaluAR con otra database).
+2. Copiá la connection string (pooled) con `sslmode=require`.
+3. En Streamlit Cloud → **Settings → Secrets**:
+
+```
+DATABASE_URL = "postgresql://..."
+```
+
+4. **Reboot** la app. A partir de ahí los PEI persisten.
+
+Mientras tanto: descargá siempre **Word** o **JSON** desde Resumen / Mis PEI.
 
 1. Crear cuenta (PIN de al menos 4 caracteres).
 2. **Nuevo plan → Cargar demo (Federación de Judo)**.

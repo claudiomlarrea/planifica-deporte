@@ -4,7 +4,7 @@ import hashlib
 import json
 from typing import Any
 
-from planifica.db_backend import get_connection
+from planifica.db_backend import get_connection, row_to_dict
 from planifica.utils import empty_plan_payload, generate_id, utc_now
 
 
@@ -27,8 +27,7 @@ CREATE TABLE IF NOT EXISTS plans (
     payload TEXT NOT NULL,
     status TEXT NOT NULL DEFAULT 'borrador',
     created_at TEXT NOT NULL,
-    updated_at TEXT NOT NULL,
-    FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+    updated_at TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS app_stats (
@@ -41,11 +40,6 @@ CREATE TABLE IF NOT EXISTS app_stats (
 def init_schema() -> None:
     with get_connection() as conn:
         conn.executescript(SCHEMA)
-        conn.commit()
-
-
-def row_to_dict(row) -> dict[str, Any]:
-    return dict(row) if row else {}
 
 
 def register_account(name: str, pin: str) -> dict[str, Any]:
@@ -57,7 +51,6 @@ def register_account(name: str, pin: str) -> dict[str, Any]:
             "INSERT INTO accounts (id, name, pin_hash, created_at) VALUES (?, ?, ?, ?)",
             (aid, name, hash_pin(pin), now),
         )
-        conn.commit()
     return {"id": aid, "name": name}
 
 
@@ -113,35 +106,40 @@ def create_plan(account_id: str, title: str, payload: dict | None = None) -> dic
             """,
             (pid, account_id, title.strip(), body, now, now),
         )
-        conn.commit()
     return get_plan(pid, account_id)  # type: ignore[return-value]
 
 
-def update_plan(plan_id: str, account_id: str, *, title: str | None, payload: dict, status: str | None) -> None:
+def update_plan(
+    plan_id: str,
+    account_id: str,
+    *,
+    title: str | None,
+    payload: dict,
+    status: str | None,
+) -> None:
     now = utc_now()
+    body = json.dumps(payload, ensure_ascii=False)
     with get_connection() as conn:
         if title is not None and status is not None:
             conn.execute(
                 "UPDATE plans SET title = ?, payload = ?, status = ?, updated_at = ? WHERE id = ? AND account_id = ?",
-                (title.strip(), json.dumps(payload, ensure_ascii=False), status, now, plan_id, account_id),
+                (title.strip(), body, status, now, plan_id, account_id),
             )
         elif title is not None:
             conn.execute(
                 "UPDATE plans SET title = ?, payload = ?, updated_at = ? WHERE id = ? AND account_id = ?",
-                (title.strip(), json.dumps(payload, ensure_ascii=False), now, plan_id, account_id),
+                (title.strip(), body, now, plan_id, account_id),
             )
         else:
             conn.execute(
                 "UPDATE plans SET payload = ?, updated_at = ? WHERE id = ? AND account_id = ?",
-                (json.dumps(payload, ensure_ascii=False), now, plan_id, account_id),
+                (body, now, plan_id, account_id),
             )
-        conn.commit()
 
 
 def delete_plan(plan_id: str, account_id: str) -> None:
     with get_connection() as conn:
         conn.execute("DELETE FROM plans WHERE id = ? AND account_id = ?", (plan_id, account_id))
-        conn.commit()
 
 
 def duplicate_plan(plan_id: str, account_id: str) -> dict[str, Any] | None:
@@ -154,8 +152,11 @@ def duplicate_plan(plan_id: str, account_id: str) -> dict[str, Any] | None:
 
 def get_usage_count() -> int:
     with get_connection() as conn:
-        row = conn.execute("SELECT value FROM app_stats WHERE key = 'sessions'").fetchone()
-    return int(row[0]) if row else 0
+        row = conn.execute("SELECT value FROM app_stats WHERE key = ?", ("sessions",)).fetchone()
+    if not row:
+        return 0
+    d = row_to_dict(row)
+    return int(d.get("value") or next(iter(d.values())))
 
 
 def increment_usage() -> None:
@@ -163,7 +164,6 @@ def increment_usage() -> None:
         conn.execute(
             """
             INSERT INTO app_stats (key, value) VALUES ('sessions', 1)
-            ON CONFLICT(key) DO UPDATE SET value = value + 1
+            ON CONFLICT(key) DO UPDATE SET value = app_stats.value + 1
             """
         )
-        conn.commit()
