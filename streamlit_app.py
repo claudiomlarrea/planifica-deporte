@@ -21,9 +21,10 @@ from planifica.database import (
     register_account,
     update_plan,
 )
-from planifica.export import parse_plan_backup, plan_backup_bytes, plan_to_docx, plan_to_html, plan_to_markdown
+from planifica.export import parse_plan_backup, plan_backup_bytes, plan_to_docx, plan_to_markdown
 from planifica.geo import PAISES, PROVINCIAS_ARGENTINA, region_label
 from planifica.modules import HOW_IT_WORKS, MODULE_HELP, MODULE_ORDER
+from planifica.preview import render_plan_preview
 from planifica.progress import module_completion, total_completion
 from planifica.theme import inject_theme, metric_card, render_header
 from planifica.utils import demo_plan_payload, empty_plan_payload
@@ -614,8 +615,8 @@ def page_edit() -> None:
         st.markdown("### Resumen del plan")
         _module_help("resumen")
         md = plan_to_markdown(st.session_state.draft_title, payload)
-        st.markdown(plan_to_html(st.session_state.draft_title, payload), unsafe_allow_html=True)
         safe_name = (st.session_state.draft_title or "PEI")[:50]
+        st.markdown("#### Descargar")
         c1, c2, c3 = st.columns(3)
         with c1:
             st.download_button(
@@ -649,6 +650,9 @@ def page_edit() -> None:
                 status="finalizado",
             )
             st.success("Estado: finalizado.")
+        st.divider()
+        st.markdown("#### Vista previa")
+        render_plan_preview(st.session_state.draft_title, payload)
 
     nav_c1, nav_c2, nav_c3 = st.columns([1, 1, 2])
     keys = [k for k, _ in MODULE_ORDER]
