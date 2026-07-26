@@ -53,11 +53,46 @@ def objective_options(payload: dict[str, Any]) -> list[str]:
 
 
 def action_options(payload: dict[str, Any]) -> list[str]:
-    opts = []
+    """Acciones del módulo 6 (y ya usadas en actividades), sin vacíos ni duplicados."""
+    opts: list[str] = []
+    seen: set[str] = set()
+
+    def add(value: Any) -> None:
+        text = str(value or "").strip()
+        if text and text not in seen:
+            seen.add(text)
+            opts.append(text)
+
     for a in payload.get("acciones") or []:
-        t = str(a.get("accion") or "").strip()
-        if t:
-            opts.append(t)
+        add(a.get("accion"))
+    for a in payload.get("actividades") or []:
+        add(a.get("accion_pei"))
+    return opts
+
+
+def kpi_options(payload: dict[str, Any]) -> list[str]:
+    """KPI del módulo 7, de acciones del plan y de actividades ya cargadas."""
+    opts: list[str] = []
+    seen: set[str] = set()
+
+    def add(value: Any) -> None:
+        text = str(value or "").strip()
+        if not text:
+            return
+        # Líneas tipo "Afiliados · Clubes · Entrenadores"
+        parts = [p.strip() for p in text.replace(";", "\n").split("·")]
+        for part in parts:
+            for line in parse_lines(part):
+                if line and line not in seen:
+                    seen.add(line)
+                    opts.append(line)
+
+    rend = payload.get("rendimiento") or {}
+    add(rend.get("kpis"))
+    for a in payload.get("acciones") or []:
+        add(a.get("kpi"))
+    for a in payload.get("actividades") or []:
+        add(a.get("kpi_nombre"))
     return opts
 
 

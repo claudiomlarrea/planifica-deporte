@@ -33,6 +33,7 @@ from planifica.monitoring import (
     df_por_estado,
     df_por_prioridad,
     empty_actividad,
+    kpi_options,
     objective_options,
     priority_options,
 )
@@ -696,6 +697,7 @@ def page_edit() -> None:
         prios = priority_options(payload)
         objs = objective_options(payload)
         acciones_pei = action_options(payload)
+        kpis = kpi_options(payload)
 
         with st.form("nueva_actividad", clear_on_submit=True):
             st.markdown("#### Nueva actividad")
@@ -708,12 +710,37 @@ def page_edit() -> None:
                 periodo = st.text_input("Período", placeholder="2026-Q1 / 2026-S1")
             with c2:
                 estado = st.selectbox("Estado", ESTADOS, index=1)
-                accion_pei = st.selectbox(
-                    "Acción del plan (opcional)",
-                    ["—"] + acciones_pei,
-                )
-                kpi_nombre = st.text_input("KPI / indicador")
+                if acciones_pei:
+                    accion_pei = st.selectbox(
+                        "Acción del plan (opcional)",
+                        ["—"] + acciones_pei,
+                    )
+                else:
+                    st.caption(
+                        "Todavía no hay acciones en el módulo 6. "
+                        "Cargalas ahí para elegirlas en este desplegable."
+                    )
+                    accion_pei = "—"
+                if kpis:
+                    kpi_sel = st.selectbox(
+                        "KPI / indicador",
+                        ["—"] + kpis + ["Otro (escribir abajo)"],
+                    )
+                else:
+                    kpi_sel = "Otro (escribir abajo)"
+                    st.caption(
+                        "Todavía no hay KPI en el módulo 7 ni en el plan de acción. "
+                        "Podés escribir uno abajo o cargarlos primero."
+                    )
                 unidad = st.text_input("Unidad", placeholder="afiliados, escuelas, torneos…")
+            kpi_otro = st.text_input(
+                "KPI personalizado (si elegiste «Otro» o no hay lista)",
+                placeholder="Ej.: Escuelas activas",
+            )
+            if kpi_sel == "Otro (escribir abajo)" or kpi_sel == "—":
+                kpi_nombre = kpi_otro.strip()
+            else:
+                kpi_nombre = kpi_sel
             c3, c4, c5 = st.columns(3)
             with c3:
                 meta = st.number_input("Meta", min_value=0.0, value=0.0, step=1.0)
@@ -740,7 +767,7 @@ def page_edit() -> None:
                             "fecha_inicio": fecha_inicio.strip(),
                             "fecha_fin": fecha_fin.strip(),
                             "estado": estado,
-                            "kpi_nombre": kpi_nombre.strip(),
+                            "kpi_nombre": kpi_nombre,
                             "meta": float(meta),
                             "avance": float(avance),
                             "unidad": unidad.strip(),
