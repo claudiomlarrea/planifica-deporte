@@ -113,4 +113,21 @@ def render_plan_preview(title: str, payload: dict[str, Any]) -> None:
         st.markdown("### 8 · Tecnología e IA")
         _block("Notas", tech.get("notas_ia"))
 
+    acts = payload.get("actividades") or []
+    visibles = [a for a in acts if str(a.get("titulo") or "").strip()]
+    if visibles:
+        st.markdown("### 9 · Actividades de ejecución")
+        rows = []
+        for a in visibles:
+            rows.append(
+                {
+                    "Actividad": a.get("titulo") or "",
+                    "Prioridad": a.get("prioridad") or "",
+                    "Estado": a.get("estado") or "",
+                    "Meta": a.get("meta") or 0,
+                    "Avance": a.get("avance") or 0,
+                }
+            )
+        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+
     st.caption("Generado con PlanificaDeporte · Manual COI (2020), Unidades 53–57")

@@ -24,10 +24,22 @@ from planifica.database import (
 from planifica.export import parse_plan_backup, plan_backup_bytes, plan_to_docx, plan_to_markdown
 from planifica.geo import PAISES, PROVINCIAS_ARGENTINA, region_label
 from planifica.modules import HOW_IT_WORKS, MODULE_HELP, MODULE_ORDER
+from planifica.monitoring import (
+    ESTADOS,
+    action_options,
+    dashboard_metrics,
+    df_actividades_tabla,
+    df_kpi_meta_avance,
+    df_por_estado,
+    df_por_prioridad,
+    empty_actividad,
+    objective_options,
+    priority_options,
+)
 from planifica.preview import render_plan_preview
 from planifica.progress import module_completion, total_completion
 from planifica.theme import inject_theme, metric_card, render_header
-from planifica.utils import demo_plan_payload, empty_plan_payload
+from planifica.utils import demo_plan_payload, empty_plan_payload, generate_id
 
 st.set_page_config(
     page_title="PlanificaDeporte",
@@ -142,7 +154,7 @@ def sidebar_nav() -> None:
         comp = module_completion(st.session_state.draft_payload)
         st.sidebar.caption("Avance por módulo")
         for key, label in MODULE_ORDER:
-            if key == "resumen":
+            if key in ("resumen", "tablero"):
                 continue
             pct = int(comp.get(key, 0) * 100)
             st.sidebar.progress(comp.get(key, 0), text=f"{label.split('·', 1)[-1].strip()} ({pct}%)")
@@ -155,8 +167,8 @@ def page_home() -> None:
     st.subheader("Tu primer Plan Estratégico Institucional")
     st.markdown(
         "Pensado para clubes, federaciones y asociaciones que **aún no tienen PEI**. "
-        "El sistema guía desde cero: quiénes son, dónde están, a dónde quieren ir, "
-        "qué van a hacer y cómo van a medirlo (Manual COI, Unidades 53–57)."
+        "Armá el plan desde cero, cargá **actividades de ejecución** y seguí el avance "
+        "en el **tablero de monitoreo** integrado (Manual COI, Unidades 53–57)."
     )
     if st.button("Entrar / crear cuenta", type="primary"):
         st.session_state.page = "auth"
@@ -339,6 +351,7 @@ def _payload() -> dict:
         "aprobado_por": "",
         "fecha_aprobacion": "",
     })
+    payload.setdefault("actividades", [])
     return payload
 
 
@@ -653,6 +666,180 @@ def page_edit() -> None:
         st.divider()
         st.markdown("#### Vista previa")
         render_plan_preview(st.session_state.draft_title, payload)
+
+    elif mod == "actividades":
+        st.markdown("### Actividades de ejecución del PEI")
+        _module_help("actividades")
+        st.info(
+            "Cargá actividades concretas vinculadas a prioridades y objetivos. "
+            "Los **Borradores** no aparecen en el tablero hasta cambiar de estado."
+        )
+        acts = payload.setdefault("actividades", [])
+        prios = priority_options(payload)
+        objs = objective_options(payload)
+        acciones_pei = action_options(payload)
+
+        with st.form("nueva_actividad", clear_on_submit=True):
+            st.markdown("#### Nueva actividad")
+            titulo = st.text_input("Título de la actividad")
+            c1, c2 = st.columns(2)
+            with c1:
+                prioridad = st.selectbox("Prioridad del PEI", prios)
+                objetivo = st.selectbox("Objetivo SMART", objs)
+                responsable = st.text_input("Responsable")
+                periodo = st.text_input("Período", placeholder="2026-Q1 / 2026-S1")
+            with c2:
+                estado = st.selectbox("Estado", ESTADOS, index=1)
+                accion_pei = st.selectbox(
+                    "Acción del plan (opcional)",
+                    ["—"] + acciones_pei,
+                )
+                kpi_nombre = st.text_input("KPI / indicador")
+                unidad = st.text_input("Unidad", placeholder="afiliados, escuelas, torneos…")
+            c3, c4, c5 = st.columns(3)
+            with c3:
+                meta = st.number_input("Meta", min_value=0.0, value=0.0, step=1.0)
+            with c4:
+                avance = st.number_input("Avance actual", min_value=0.0, value=0.0, step=1.0)
+            with c5:
+                fecha_inicio = st.text_input("Inicio", placeholder="AAAA-MM-DD")
+            fecha_fin = st.text_input("Fin", placeholder="AAAA-MM-DD")
+            notas = st.text_area("Notas", height=70)
+            if st.form_submit_button("Agregar actividad", type="primary"):
+                if not titulo.strip():
+                    st.error("Indicá un título.")
+                else:
+                    nueva = empty_actividad()
+                    nueva.update(
+                        {
+                            "id": generate_id("act"),
+                            "titulo": titulo.strip(),
+                            "prioridad": prioridad,
+                            "objetivo": objetivo,
+                            "accion_pei": "" if accion_pei == "—" else accion_pei,
+                            "responsable": responsable.strip(),
+                            "periodo": periodo.strip(),
+                            "fecha_inicio": fecha_inicio.strip(),
+                            "fecha_fin": fecha_fin.strip(),
+                            "estado": estado,
+                            "kpi_nombre": kpi_nombre.strip(),
+                            "meta": float(meta),
+                            "avance": float(avance),
+                            "unidad": unidad.strip(),
+                            "notas": notas.strip(),
+                        }
+                    )
+                    acts.append(nueva)
+                    save_current_plan()
+                    st.success("Actividad agregada.")
+                    st.rerun()
+
+        st.markdown("#### Actividades cargadas")
+        if not acts:
+            st.caption("Todavía no hay actividades. Usá el formulario de arriba o cargá la demo del PEI.")
+        else:
+            df = pd.DataFrame(acts)
+            cols_show = [
+                c
+                for c in [
+                    "titulo",
+                    "prioridad",
+                    "objetivo",
+                    "responsable",
+                    "periodo",
+                    "estado",
+                    "kpi_nombre",
+                    "meta",
+                    "avance",
+                    "unidad",
+                ]
+                if c in df.columns
+            ]
+            edited = st.data_editor(
+                df[cols_show] if cols_show else df,
+                num_rows="fixed",
+                use_container_width=True,
+                column_config={
+                    "estado": st.column_config.SelectboxColumn("estado", options=ESTADOS),
+                    "meta": st.column_config.NumberColumn("meta", min_value=0.0),
+                    "avance": st.column_config.NumberColumn("avance", min_value=0.0),
+                },
+                key="acts_editor",
+            )
+            if st.button("Guardar cambios de la tabla"):
+                for i in range(len(edited)):
+                    if i < len(acts):
+                        for col in cols_show:
+                            acts[i][col] = edited.iloc[i][col]
+                save_current_plan()
+                st.success("Cambios guardados.")
+            del_opts = [
+                f"{i + 1}. {a.get('titulo') or '(sin título)'}"
+                for i, a in enumerate(acts)
+            ]
+            if del_opts:
+                elegir = st.selectbox("Eliminar actividad", ["—"] + del_opts)
+                if elegir != "—" and st.button("Eliminar seleccionada"):
+                    idx_del = del_opts.index(elegir)
+                    acts.pop(idx_del)
+                    save_current_plan()
+                    st.rerun()
+
+    elif mod == "tablero":
+        st.markdown("### Tablero de monitoreo del PEI")
+        _module_help("tablero")
+        metrics = dashboard_metrics(payload)
+        m1, m2, m3, m4, m5 = st.columns(5)
+        with m1:
+            metric_card("Actividades", str(metrics["total"]))
+        with m2:
+            metric_card("En tablero", str(metrics["en_tablero"]))
+        with m3:
+            metric_card("Avance global", f"{metrics['avance_global']}%")
+        with m4:
+            metric_card("En curso", str(metrics["en_curso"]))
+        with m5:
+            metric_card("Cumplidas", str(metrics["cumplidas"]))
+
+        if metrics["en_tablero"] == 0:
+            st.warning(
+                "No hay actividades publicadas en el tablero. "
+                "Cargá actividades en el módulo 11 y cambiá el estado a Planificada, En curso o Cumplida."
+            )
+        else:
+            g1, g2 = st.columns(2)
+            with g1:
+                st.markdown("#### Actividades por estado")
+                df_est = df_por_estado(payload)
+                if not df_est.empty:
+                    st.bar_chart(df_est.set_index("Estado"))
+            with g2:
+                st.markdown("#### Cumplimiento por prioridad")
+                df_prio = df_por_prioridad(payload)
+                if not df_prio.empty and "% cumplimiento" in df_prio.columns:
+                    st.bar_chart(df_prio.set_index("Prioridad")[["% cumplimiento"]])
+
+            st.markdown("#### Meta vs. avance (KPI)")
+            df_kpi = df_kpi_meta_avance(payload)
+            if not df_kpi.empty:
+                st.bar_chart(df_kpi.set_index("KPI / actividad")[["Meta", "Avance"]])
+
+            st.markdown("#### Detalle de actividades en tablero")
+            st.dataframe(
+                df_actividades_tabla(payload, solo_tablero=True),
+                use_container_width=True,
+                hide_index=True,
+            )
+
+            st.markdown("#### Avance por prioridad (tabla)")
+            st.dataframe(df_por_prioridad(payload), use_container_width=True, hide_index=True)
+
+        with st.expander("Incluir borradores en la tabla (solo consulta)"):
+            st.dataframe(
+                df_actividades_tabla(payload, solo_tablero=False),
+                use_container_width=True,
+                hide_index=True,
+            )
 
     nav_c1, nav_c2, nav_c3 = st.columns([1, 1, 2])
     keys = [k for k, _ in MODULE_ORDER]

@@ -228,6 +228,25 @@ def plan_to_markdown(title: str, payload: dict[str, Any]) -> str:
             "## 8. Tecnología e IA (opcional)",
             _line("Notas", tech.get("notas_ia", "")),
             "",
+            "## 9. Actividades de ejecución",
+        ]
+    )
+    actividades = payload.get("actividades") or []
+    n = 0
+    for a in actividades:
+        if not str(a.get("titulo") or "").strip():
+            continue
+        n += 1
+        lines.append(
+            f"{n}. **{a.get('titulo', '')}** — Prioridad: {a.get('prioridad', '')} · "
+            f"Estado: {a.get('estado', '')} · KPI: {a.get('kpi_nombre', '')} · "
+            f"Meta: {a.get('meta', '')} · Avance: {a.get('avance', '')}"
+        )
+    if n == 0:
+        lines.append("_Sin actividades registradas._")
+    lines.extend(
+        [
+            "",
             "---",
             "",
             "_Primer PEI generado con PlanificaDeporte · Manual COI (2020), Unidades 53–57._",
@@ -361,6 +380,23 @@ def plan_to_docx(title: str, payload: dict[str, Any]) -> bytes:
     if (tech.get("notas_ia") or "").strip():
         doc.add_heading("8. Tecnología e IA", level=1)
         _docx_para(doc, "Notas", tech.get("notas_ia"))
+
+    doc.add_heading("9. Actividades de ejecución", level=1)
+    n_act = 0
+    for a in payload.get("actividades") or []:
+        if not str(a.get("titulo") or "").strip():
+            continue
+        n_act += 1
+        doc.add_heading(f"{n_act}. {a.get('titulo')}", level=2)
+        _docx_para(doc, "Prioridad", a.get("prioridad"))
+        _docx_para(doc, "Objetivo", a.get("objetivo"))
+        _docx_para(doc, "Responsable", a.get("responsable"))
+        _docx_para(doc, "Estado", a.get("estado"))
+        _docx_para(doc, "KPI", a.get("kpi_nombre"))
+        _docx_para(doc, "Meta", a.get("meta"))
+        _docx_para(doc, "Avance", a.get("avance"))
+    if n_act == 0:
+        doc.add_paragraph("Sin actividades registradas.")
 
     foot = doc.add_paragraph()
     fr = foot.add_run(

@@ -1,8 +1,7 @@
-"""Navegación y ayuda: primer PEI desde cero (club / federación / asociación)."""
+"""Navegación y ayuda: primer PEI + ejecución + tablero de monitoreo."""
 
 from __future__ import annotations
 
-# Orden pedagógico: partimos de cero → armamos el PEI → al final un proyecto opcional.
 MODULE_ORDER: list[tuple[str, str]] = [
     ("organizacion", "1 · Organización"),
     ("pei", "2 · Tu primer PEI"),
@@ -14,6 +13,8 @@ MODULE_ORDER: list[tuple[str, str]] = [
     ("personas", "8 · Personas y voluntarios"),
     ("proyectos", "9 · Primer proyecto (opcional)"),
     ("resumen", "10 · Resumen y exportación"),
+    ("actividades", "11 · Actividades de ejecución"),
+    ("tablero", "12 · Tablero de monitoreo"),
 ]
 
 MODULE_HELP: dict[str, str] = {
@@ -54,22 +55,26 @@ MODULE_HELP: dict[str, str] = {
         "Revisá el primer PEI completo. Descargá Word (.docx) para comité/asamblea, "
         "Markdown o JSON de respaldo."
     ),
+    "actividades": (
+        "Con el PEI armado, cargá actividades de ejecución vinculadas a prioridades y objetivos. "
+        "Solo las que no están en Borrador alimentan el tablero."
+    ),
+    "tablero": (
+        "Tablero de monitoreo del PEI: avance global, actividades por estado y prioridad, "
+        "meta vs. avance (estilo Looker Studio, integrado en el sistema)."
+    ),
 }
+
 HOW_IT_WORKS = """
-**Para instituciones que todavía no tienen plan**
+**Ciclo completo**
 
-Muchos clubes y asociaciones **no tienen PEI**: solo actividades, torneos e improvisación.
-PlanificaDeporte guía el **primer Plan Estratégico Institucional** paso a paso.
+1. **Armar el PEI** (módulos 1–10): organización, DAFO, visión, objetivos, acciones, KPI, personas.
+2. **Ejecutar** (módulo 11): cargar actividades vinculadas a prioridades y objetivos del PEI.
+3. **Monitorear** (módulo 12): tablero con gráficos y tablas de avance (meta vs. real).
 
-1. Crear cuenta de la organización.
-2. **Nuevo PEI** (en blanco o con demo de ejemplo).
-3. Completar módulos **1 → 8** (quiénes somos, DAFO, visión, objetivos, acciones, KPI, personas).
-4. El módulo **9** (proyecto) es opcional y va **después** del PEI.
-5. En **Resumen**, exportar y llevar el documento a aprobación.
+**Regla del tablero**
 
-**Después de aprobarlo**
-
-- Asignar responsables en el plan de acción.
-- Revisar indicadores con la frecuencia acordada.
-- Actualizar el PEI cada año (plan operativo) y al cerrar el horizonte.
+- Una actividad en **Borrador** no cuenta.
+- **Planificada / En curso / Cumplida** sí impactan el monitoreo.
+- Cada actividad debe estar vinculada a una prioridad u objetivo del PEI.
 """

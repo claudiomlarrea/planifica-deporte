@@ -58,6 +58,14 @@ def module_completion(payload: dict) -> dict[str, float]:
         "acciones": 1.0 if _filled(payload.get("acciones")) else 0.0,
         "rendimiento": ratio(["kpis", "frecuencia_evaluacion", "informes_comite"], rend),
         "personas": (ratio(["roles_clave", "brechas_formacion"], rrhh) + ratio(["necesidades", "formacion"], vol)) / 2,
+        "actividades": 1.0 if _filled(payload.get("actividades")) else 0.0,
+        "tablero": 1.0
+        if any(
+            str(a.get("estado") or "") in {"Planificada", "En curso", "Cumplida"}
+            and str(a.get("titulo") or "").strip()
+            for a in (payload.get("actividades") or [])
+        )
+        else 0.0,
     }
 
 

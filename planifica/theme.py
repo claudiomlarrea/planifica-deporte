@@ -9,7 +9,7 @@ BRAND_GREEN = "#044A30"
 BORDER_SOFT = "#B8D4C8"
 
 APP_NAME = "PlanificaDeporte"
-TAGLINE = "Tu primer Plan Estratégico Institucional — clubes, federaciones y asociaciones"
+TAGLINE = "PEI + actividades + tablero de monitoreo para clubes y federaciones"
 FOOTER = "Observatorio de Inteligencia Artificial · Metodología COI (2020)"
 
 
