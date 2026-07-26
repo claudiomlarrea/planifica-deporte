@@ -8,8 +8,8 @@ BG_SURFACE = "#FFFFFF"
 BRAND_GREEN = "#044A30"
 BORDER_SOFT = "#B8D4C8"
 
-APP_NAME = "PlanificaDeporte"
-TAGLINE = "PEI + actividades + tablero de monitoreo para clubes y federaciones"
+APP_NAME = "Rumbo"
+TAGLINE = "PEI + actividades + tablero de monitoreo para clubes, federaciones y asociaciones"
 FOOTER = "Observatorio de Inteligencia Artificial · Metodología COI (2020)"
 
 
@@ -207,7 +207,7 @@ def render_header() -> None:
         <div style="display:flex;align-items:center;gap:16px;margin-bottom:8px;">
           <div style="background:{BRAND_GREEN};color:white;width:72px;height:72px;
             border-radius:50%;display:flex;align-items:center;justify-content:center;
-            font-weight:700;font-size:1.5rem;">P</div>
+            font-weight:700;font-size:1.5rem;">R</div>
           <div>
             <div style="font-size:2rem;font-weight:700;color:{BRAND_GREEN};line-height:1.1;">{APP_NAME}</div>
             <div style="color:#64748b;font-size:1rem;">{TAGLINE}</div>

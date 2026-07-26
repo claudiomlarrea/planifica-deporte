@@ -1,4 +1,4 @@
-"""PlanificaDeporte — interfaz principal Streamlit."""
+"""Rumbo — interfaz principal Streamlit."""
 
 from __future__ import annotations
 
@@ -42,8 +42,8 @@ from planifica.theme import inject_theme, metric_card, render_header
 from planifica.utils import demo_plan_payload, empty_plan_payload, generate_id
 
 st.set_page_config(
-    page_title="PlanificaDeporte",
-    page_icon="P",
+    page_title="Rumbo",
+    page_icon="R",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -160,7 +160,7 @@ def sidebar_nav() -> None:
             st.sidebar.progress(comp.get(key, 0), text=f"{label.split('·', 1)[-1].strip()} ({pct}%)")
 
     st.sidebar.divider()
-    st.sidebar.caption(f"**{get_usage_count()}** sesiones registradas en PlanificaDeporte")
+    st.sidebar.caption(f"**{get_usage_count()}** sesiones registradas en Rumbo")
 
 
 def page_home() -> None:
@@ -241,7 +241,7 @@ def page_panel() -> None:
             st.rerun()
 
     st.markdown("#### Importar respaldo")
-    up = st.file_uploader("Archivo .json de PlanificaDeporte", type=["json"])
+    up = st.file_uploader("Archivo .json de Rumbo", type=["json"])
     if up and st.button("Importar PEI"):
         try:
             title, payload = parse_plan_backup(up.getvalue())

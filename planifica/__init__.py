@@ -1,1 +1,1 @@
-"""PlanificaDeporte — planificación estratégica para organizaciones deportivas."""
+"""Rumbo — planificación estratégica para organizaciones deportivas."""

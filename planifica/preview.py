@@ -130,4 +130,4 @@ def render_plan_preview(title: str, payload: dict[str, Any]) -> None:
             )
         st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
 
-    st.caption("Generado con PlanificaDeporte · Manual COI (2020), Unidades 53–57")
+    st.caption("Generado con Rumbo · Manual COI (2020), Unidades 53–57")

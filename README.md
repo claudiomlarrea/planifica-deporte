@@ -1,6 +1,6 @@
-# PlanificaDeporte
+# Rumbo
 
-Sistema de planificación estratégica para **federaciones, clubes y organizaciones deportivas**, alineado al Manual COI (2020) Unidades 53–57.
+Sistema de planificación estratégica para **clubes, federaciones, asociaciones y organizaciones deportivas**, alineado al Manual COI (2020) Unidades 53–57.
 
 Ciclo: **armar PEI → cargar actividades → monitorear en tablero** (gráficos y tablas integrados).
 

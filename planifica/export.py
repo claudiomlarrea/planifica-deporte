@@ -137,7 +137,7 @@ def plan_to_html(title: str, payload: dict[str, Any]) -> str:
       <h3>8 · Tecnología e IA</h3>
       {_block("Notas", tech.get("notas_ia"))}
       <div class="pd-doc-footer">
-        Primer PEI generado con PlanificaDeporte · Manual COI (2020), Unidades 53–57
+        Primer PEI generado con Rumbo · Manual COI (2020), Unidades 53–57
       </div>
     </div>
     """
@@ -249,21 +249,22 @@ def plan_to_markdown(title: str, payload: dict[str, Any]) -> str:
             "",
             "---",
             "",
-            "_Primer PEI generado con PlanificaDeporte · Manual COI (2020), Unidades 53–57._",
+            "_Primer PEI generado con Rumbo · Manual COI (2020), Unidades 53–57._",
         ]
     )
     return "\n".join(lines)
 
 
 def plan_backup_bytes(title: str, payload: dict[str, Any]) -> bytes:
-    doc = {"format": "planifica-deporte-backup", "version": 1, "title": title, "payload": payload}
+    doc = {"format": "rumbo-backup", "version": 1, "title": title, "payload": payload}
     return json.dumps(doc, ensure_ascii=False, indent=2).encode("utf-8")
 
 
 def parse_plan_backup(raw: bytes) -> tuple[str, dict[str, Any]]:
     data = json.loads(raw.decode("utf-8"))
-    if data.get("format") != "planifica-deporte-backup":
-        raise ValueError("Archivo no reconocido como respaldo PlanificaDeporte.")
+    fmt = data.get("format")
+    if fmt not in {"rumbo-backup", "planifica-deporte-backup"}:
+        raise ValueError("Archivo no reconocido como respaldo Rumbo.")
     return str(data.get("title") or "Plan importado"), data.get("payload") or {}
 
 
@@ -307,7 +308,7 @@ def plan_to_docx(title: str, payload: dict[str, Any]) -> bytes:
     for run in h.runs:
         run.font.color.rgb = RGBColor(0x04, 0x4A, 0x30)
 
-    sub = doc.add_paragraph("Primer Plan Estratégico Institucional · PlanificaDeporte")
+    sub = doc.add_paragraph("Primer Plan Estratégico Institucional · Rumbo")
     for run in sub.runs:
         run.italic = True
         run.font.size = Pt(10)
@@ -400,7 +401,7 @@ def plan_to_docx(title: str, payload: dict[str, Any]) -> bytes:
 
     foot = doc.add_paragraph()
     fr = foot.add_run(
-        "Generado con PlanificaDeporte · Manual de Administración Deportiva, COI (2020), Unidades 53–57."
+        "Generado con Rumbo · Manual de Administración Deportiva, COI (2020), Unidades 53–57."
     )
     fr.italic = True
     fr.font.size = Pt(9)
