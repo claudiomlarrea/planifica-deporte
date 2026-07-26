@@ -6,6 +6,8 @@ BG_MAIN = "#D5E9E2"
 BG_SIDEBAR = "#C6E0D6"
 BG_SURFACE = "#FFFFFF"
 BRAND_GREEN = "#044A30"
+SURVEY_BLUE = "#2563EB"
+SURVEY_BLUE_DARK = "#1D4ED8"
 BORDER_SOFT = "#B8D4C8"
 
 APP_NAME = "Rumbo"
@@ -69,6 +71,59 @@ def inject_theme() -> None:
         }}
         .pd-metric-label {{ font-size: 0.85rem; color: #475569; }}
         .pd-metric-value {{ font-size: 1.6rem; font-weight: 600; color: #0f172a; }}
+        .rumbo-survey-cta {{
+            background: {SURVEY_BLUE};
+            color: #ffffff !important;
+            border-radius: 0.75rem;
+            padding: 0.9rem 1.15rem;
+            font-weight: 650;
+            font-size: 1.02rem;
+            margin: 0.35rem 0 0.75rem 0;
+            border: 1px solid {SURVEY_BLUE_DARK};
+            box-shadow: 0 1px 2px rgba(37, 99, 235, 0.25);
+        }}
+        .rumbo-survey-cta span {{
+            color: #ffffff !important;
+        }}
+        a.rumbo-survey-btn {{
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            box-sizing: border-box;
+            background: {SURVEY_BLUE} !important;
+            color: #ffffff !important;
+            text-decoration: none !important;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.65rem 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid {SURVEY_BLUE_DARK};
+            margin: 0.15rem 0 0.5rem 0;
+        }}
+        a.rumbo-survey-btn:hover {{
+            background: {SURVEY_BLUE_DARK} !important;
+            color: #ffffff !important;
+        }}
+        a.rumbo-survey-btn-disabled,
+        span.rumbo-survey-btn-disabled {{
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            box-sizing: border-box;
+            background: #93c5fd !important;
+            color: #eff6ff !important;
+            text-decoration: none !important;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.65rem 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid #93c5fd;
+            margin: 0.15rem 0 0.5rem 0;
+            pointer-events: none;
+            opacity: 0.85;
+        }}
         .pd-doc {{
             background: {BG_SURFACE};
             border: 1px solid {BORDER_SOFT};

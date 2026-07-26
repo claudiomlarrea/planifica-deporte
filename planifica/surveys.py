@@ -154,96 +154,105 @@ def render_survey_panel(module_key: str, payload: dict[str, Any]) -> None:
         return
 
     entry = get_survey(payload, module_key)
-    with st.expander(f"Encuesta para reunir aportes — {meta['titulo']}", expanded=False):
-        st.caption(meta["para_que"])
-        st.info(
-            "La comisión directiva crea el formulario en Google Forms (u otra herramienta), "
-            "pega el enlace acá y lo comparte con los grupos que elija "
-            "(WhatsApp, mail, redes del club/federación/asociación). "
-            "Después sintetizan las respuestas en los campos de este módulo."
-        )
+    st.markdown(
+        f'<div class="rumbo-survey-cta"><span>Encuesta para reunir aportes — {meta["titulo"]}</span></div>',
+        unsafe_allow_html=True,
+    )
+    open_panel = st.toggle(
+        "Configurar encuesta y compartir con participantes",
+        value=bool((entry.get("url") or "").strip()),
+        key=f"survey_toggle_{module_key}",
+    )
+    if not open_panel:
+        return
 
-        entry["etiqueta"] = st.text_input(
-            "Nombre del formulario (para los participantes)",
-            entry.get("etiqueta") or meta["titulo"],
-            key=f"survey_label_{module_key}",
-            placeholder=meta["titulo"],
-        )
-        entry["url"] = st.text_input(
-            "Enlace del formulario (Google Forms u otro)",
-            entry.get("url", ""),
-            key=f"survey_url_{module_key}",
-            placeholder="https://forms.gle/… o https://docs.google.com/forms/…",
-        )
-        entry["destinatarios"] = st.text_input(
-            "A quiénes lo enviará la comisión (registro interno)",
-            entry.get("destinatarios", ""),
-            key=f"survey_to_{module_key}",
-            placeholder=meta["destinatarios_ej"],
-        )
-        entry["notas"] = st.text_area(
-            "Notas (plazo de respuesta, responsable de síntesis…)",
-            entry.get("notas", ""),
-            key=f"survey_notes_{module_key}",
-            height=70,
-        )
+    st.caption(meta["para_que"])
+    st.info(
+        "La comisión directiva crea el formulario en Google Forms (u otra herramienta), "
+        "pega el enlace acá y lo comparte con los grupos que elija "
+        "(WhatsApp, mail, redes del club/federación/asociación). "
+        "Después sintetizan las respuestas en los campos de este módulo."
+    )
 
-        url = normalize_form_url(entry.get("url", ""))
-        b1, b2, b3 = st.columns(3)
-        with b1:
-            if url and is_plausible_form_url(url):
-                st.link_button(
-                    "Acceder al formulario",
-                    url,
-                    use_container_width=True,
-                    type="primary",
-                )
-            else:
-                st.button(
-                    "Acceder al formulario",
-                    disabled=True,
-                    use_container_width=True,
-                    help="Pegá un enlace válido de Google Forms u otro formulario.",
-                )
-        with b2:
-            if url and st.button(
-                "Preparar enlace para copiar",
-                key=f"survey_copy_{module_key}",
-                use_container_width=True,
-            ):
-                st.session_state[f"survey_show_copy_{module_key}"] = True
-        with b3:
-            if st.button(
-                "Ver preguntas sugeridas",
-                key=f"survey_qs_{module_key}",
-                use_container_width=True,
-            ):
-                st.session_state[f"survey_show_qs_{module_key}"] = not st.session_state.get(
-                    f"survey_show_qs_{module_key}", False
-                )
+    entry["etiqueta"] = st.text_input(
+        "Nombre del formulario (para los participantes)",
+        entry.get("etiqueta") or meta["titulo"],
+        key=f"survey_label_{module_key}",
+        placeholder=meta["titulo"],
+    )
+    entry["url"] = st.text_input(
+        "Enlace del formulario (Google Forms u otro)",
+        entry.get("url", ""),
+        key=f"survey_url_{module_key}",
+        placeholder="https://forms.gle/… o https://docs.google.com/forms/…",
+    )
+    entry["destinatarios"] = st.text_input(
+        "A quiénes lo enviará la comisión (registro interno)",
+        entry.get("destinatarios", ""),
+        key=f"survey_to_{module_key}",
+        placeholder=meta["destinatarios_ej"],
+    )
+    entry["notas"] = st.text_area(
+        "Notas (plazo de respuesta, responsable de síntesis…)",
+        entry.get("notas", ""),
+        key=f"survey_notes_{module_key}",
+        height=70,
+    )
 
-        if url and st.session_state.get(f"survey_show_copy_{module_key}"):
-            st.success(
-                "Copiá el enlace y envialo a los grupos que defina la comisión "
-                "(clubes, WhatsApp, mail, redes)."
+    url = normalize_form_url(entry.get("url", ""))
+    b1, b2, b3 = st.columns(3)
+    with b1:
+        if url and is_plausible_form_url(url):
+            st.markdown(
+                f'<a class="rumbo-survey-btn" href="{url}" target="_blank" rel="noopener noreferrer">'
+                "Acceder al formulario</a>",
+                unsafe_allow_html=True,
             )
-            st.code(url, language=None)
-            etiqueta = (entry.get("etiqueta") or meta["titulo"]).strip()
-            st.text_area(
-                "Texto sugerido para el mensaje",
-                (
-                    f"Hola: desde la comisión de {payload.get('org', {}).get('nombre') or 'la organización'} "
-                    f"te invitamos a completar «{etiqueta}» para aportar al Plan Estratégico (PEI).\n\n"
-                    f"{url}\n\n"
-                    "Tu respuesta nos ayuda a construir el plan con la comunidad. ¡Gracias!"
-                ),
-                height=120,
-                key=f"survey_msg_{module_key}",
+        else:
+            st.markdown(
+                '<span class="rumbo-survey-btn-disabled">Acceder al formulario</span>',
+                unsafe_allow_html=True,
+            )
+            st.caption("Pegá un enlace válido para habilitar el acceso.")
+    with b2:
+        if url and st.button(
+            "Preparar enlace para copiar",
+            key=f"survey_copy_{module_key}",
+            use_container_width=True,
+        ):
+            st.session_state[f"survey_show_copy_{module_key}"] = True
+    with b3:
+        if st.button(
+            "Ver preguntas sugeridas",
+            key=f"survey_qs_{module_key}",
+            use_container_width=True,
+        ):
+            st.session_state[f"survey_show_qs_{module_key}"] = not st.session_state.get(
+                f"survey_show_qs_{module_key}", False
             )
 
-        if st.session_state.get(f"survey_show_qs_{module_key}"):
-            st.markdown("**Preguntas sugeridas para armar el Google Form**")
-            st.code(meta["preguntas"], language=None)
+    if url and st.session_state.get(f"survey_show_copy_{module_key}"):
+        st.success(
+            "Copiá el enlace y envialo a los grupos que defina la comisión "
+            "(clubes, WhatsApp, mail, redes)."
+        )
+        st.code(url, language=None)
+        etiqueta = (entry.get("etiqueta") or meta["titulo"]).strip()
+        st.text_area(
+            "Texto sugerido para el mensaje",
+            (
+                f"Hola: desde la comisión de {payload.get('org', {}).get('nombre') or 'la organización'} "
+                f"te invitamos a completar «{etiqueta}» para aportar al Plan Estratégico (PEI).\n\n"
+                f"{url}\n\n"
+                "Tu respuesta nos ayuda a construir el plan con la comunidad. ¡Gracias!"
+            ),
+            height=120,
+            key=f"survey_msg_{module_key}",
+        )
 
-        if url and not is_plausible_form_url(url):
-            st.warning("Revisá el enlace: debería empezar con https:// y ser un formulario web.")
+    if st.session_state.get(f"survey_show_qs_{module_key}"):
+        st.markdown("**Preguntas sugeridas para armar el Google Form**")
+        st.code(meta["preguntas"], language=None)
+
+    if url and not is_plausible_form_url(url):
+        st.warning("Revisá el enlace: debería empezar con https:// y ser un formulario web.")

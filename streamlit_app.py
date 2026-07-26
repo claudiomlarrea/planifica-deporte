@@ -639,7 +639,11 @@ def page_edit() -> None:
             for s in surveys:
                 dest = f" · Destinatarios: {s['destinatarios']}" if s.get("destinatarios") else ""
                 st.markdown(f"- **{s['etiqueta']}**{dest}")
-                st.link_button(f"Abrir · {s['titulo']}", s["url"], key=f"sum_survey_{s['modulo']}")
+                st.markdown(
+                    f'<a class="rumbo-survey-btn" href="{s["url"]}" target="_blank" rel="noopener noreferrer">'
+                    f"Acceder al formulario · {s['titulo']}</a>",
+                    unsafe_allow_html=True,
+                )
         md = plan_to_markdown(st.session_state.draft_title, payload)
         safe_name = (st.session_state.draft_title or "PEI")[:50]
         st.markdown("#### Descargar")
