@@ -563,6 +563,7 @@ def page_edit() -> None:
     elif mod == "acciones":
         st.markdown("### Plan de acción operativo")
         _module_help("acciones")
+        render_survey_panel("acciones", payload)
         rows = payload.get("acciones") or []
         if not rows:
             rows = [{c: "" for c in ACTION_COLUMNS}]

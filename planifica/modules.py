@@ -41,7 +41,8 @@ MODULE_HELP: dict[str, str] = {
         "(medibles y con plazo). Consultá prioridades a clubes y referentes con un formulario."
     ),
     "acciones": (
-        "Convertí los objetivos en acciones concretas: qué, quién, cuándo, con qué recursos y KPI."
+        "Convertí los objetivos en acciones concretas: qué, quién, cuándo, con qué recursos y KPI. "
+        "Podés consultar a áreas y clubes con un formulario antes de cerrar la tabla."
     ),
     "rendimiento": (
         "Definí cómo van a saber si el PEI avanza: indicadores e informes al comité. "

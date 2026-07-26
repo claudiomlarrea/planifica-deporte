@@ -17,11 +17,13 @@ SURVEY_MODULES: dict[str, dict[str, str]] = {
         ),
         "destinatarios_ej": "Comisión directiva, secretarios de clubes, cuerpo técnico, socios activos",
         "preguntas": (
-            "1. ¿Cuáles son las principales fortalezas de la organización?\n"
-            "2. ¿Qué debilidades internas deberían priorizarse?\n"
-            "3. ¿Qué oportunidades del entorno conviene aprovechar?\n"
-            "4. ¿Qué amenazas externas preocupan más?\n"
-            "5. Rol / vínculo con la organización (dirigente, entrenador, socio, voluntario…)"
+            "1. ¿Cuál es tu rol o vínculo con la organización? "
+            "(dirigente, entrenador, socio, voluntario, familiar, referente de club, otro)\n"
+            "2. FORTALEZAS — ¿Cuáles son las principales fortalezas internas? (2 a 5 ideas)\n"
+            "3. DEBILIDADES — ¿Qué debilidades internas deberían priorizarse?\n"
+            "4. OPORTUNIDADES — ¿Qué oportunidades del entorno conviene aprovechar?\n"
+            "5. AMENAZAS — ¿Qué amenazas externas preocupan más?\n"
+            "6. (Opcional) Si tuvieras que elegir UNA prioridad para los próximos 2 años, ¿cuál sería?"
         ),
     },
     "cimientos": {
@@ -32,10 +34,11 @@ SURVEY_MODULES: dict[str, dict[str, str]] = {
         ),
         "destinatarios_ej": "Asamblea, comisión, referentes de clubes, familias",
         "preguntas": (
-            "1. En 2030, ¿cómo te gustaría que se reconozca a la organización?\n"
-            "2. ¿Para qué existe la organización, en tus palabras?\n"
-            "3. ¿Qué 3 valores no deberían negociarse?\n"
-            "4. Rol / vínculo con la organización"
+            "1. ¿Cuál es tu rol o vínculo con la organización?\n"
+            "2. VISIÓN — En 2030, ¿cómo te gustaría que se reconozca a la organización?\n"
+            "3. MISIÓN — ¿Para qué existe la organización, en tus palabras?\n"
+            "4. VALORES — ¿Qué 3 valores no deberían negociarse?\n"
+            "5. (Opcional) ¿Hay alguna frase o idea que debería aparecer sí o sí en la misión o la visión?"
         ),
     },
     "prioridades": {
@@ -51,6 +54,23 @@ SURVEY_MODULES: dict[str, dict[str, str]] = {
             "2. ¿Qué resultado concreto debería lograrse en 2 años?\n"
             "3. ¿Hay alguna prioridad faltante?\n"
             "4. Rol / vínculo con la organización"
+        ),
+    },
+    "acciones": {
+        "titulo": "Encuesta plan de acción",
+        "para_que": (
+            "Proponer o validar acciones concretas: qué hacer, quién, cuándo, "
+            "recursos e indicador, vinculadas a las prioridades del PEI."
+        ),
+        "destinatarios_ej": "Comisión, áreas técnicas, referentes de clubes, responsables de proyectos",
+        "preguntas": (
+            "1. Rol / vínculo con la organización\n"
+            "2. ¿A qué prioridad del PEI aporta la acción?\n"
+            "3. ¿Qué acción concreta proponés?\n"
+            "4. ¿Quién debería ser responsable?\n"
+            "5. ¿En qué plazo?\n"
+            "6. ¿Qué recursos hacen falta?\n"
+            "7. ¿Con qué KPI se mide el avance?"
         ),
     },
     "rendimiento": {
