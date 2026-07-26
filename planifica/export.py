@@ -4,6 +4,8 @@ import html
 import json
 from typing import Any
 
+from planifica.surveys import list_configured_surveys
+
 
 def _line(label: str, value: str) -> str:
     v = (value or "").strip()
@@ -244,6 +246,14 @@ def plan_to_markdown(title: str, payload: dict[str, Any]) -> str:
         )
     if n == 0:
         lines.append("_Sin actividades registradas._")
+
+    surveys = list_configured_surveys(payload)
+    if surveys:
+        lines.extend(["", "## 10. Encuestas de consulta"])
+        for s in surveys:
+            dest = f" · Destinatarios: {s['destinatarios']}" if s.get("destinatarios") else ""
+            lines.append(f"- **{s['etiqueta']}**: {s['url']}{dest}")
+
     lines.extend(
         [
             "",
@@ -398,6 +408,14 @@ def plan_to_docx(title: str, payload: dict[str, Any]) -> bytes:
         _docx_para(doc, "Avance", a.get("avance"))
     if n_act == 0:
         doc.add_paragraph("Sin actividades registradas.")
+
+    surveys = list_configured_surveys(payload)
+    if surveys:
+        doc.add_heading("10. Encuestas de consulta", level=1)
+        for s in surveys:
+            _docx_para(doc, s["etiqueta"], s["url"])
+            if s.get("destinatarios"):
+                _docx_para(doc, "Destinatarios", s["destinatarios"])
 
     foot = doc.add_paragraph()
     fr = foot.add_run(

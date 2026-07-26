@@ -28,24 +28,28 @@ MODULE_HELP: dict[str, str] = {
     ),
     "dafo": (
         "Antes de decidir a dónde van: miren dónde están. "
-        "Fortalezas y debilidades internas; oportunidades y amenazas del entorno."
+        "Fortalezas y debilidades internas; oportunidades y amenazas del entorno. "
+        "Podés vincular un Google Form y compartirlo con los grupos que elija la comisión."
     ),
     "cimientos": (
         "Redactá por primera vez visión (a dónde quieren llegar), misión (para qué existen) "
-        "y valores (cómo trabajan). Sin esto no hay PEI."
+        "y valores (cómo trabajan). Sin esto no hay PEI. "
+        "Una encuesta ayuda a contrastar con socios y clubes antes de cerrar el texto."
     ),
     "prioridades": (
         "Elegí entre 4 y 6 focos para los próximos años y formular objetivos SMART "
-        "(medibles y con plazo)."
+        "(medibles y con plazo). Consultá prioridades a clubes y referentes con un formulario."
     ),
     "acciones": (
         "Convertí los objetivos en acciones concretas: qué, quién, cuándo, con qué recursos y KPI."
     ),
     "rendimiento": (
-        "Definí cómo van a saber si el PEI avanza: indicadores e informes al comité."
+        "Definí cómo van a saber si el PEI avanza: indicadores e informes al comité. "
+        "Una encuesta sirve para acordar qué KPI importan a la organización."
     ),
     "personas": (
-        "El PEI se ejecuta con personas: roles, formación y voluntariado."
+        "El PEI se ejecuta con personas: roles, formación y voluntariado. "
+        "Encuestá a staff y voluntarios para detectar necesidades y motivaciones."
     ),
     "proyectos": (
         "Opcional. Cuando el PEI ya tiene rumbo, podés registrar un primer proyecto "
@@ -69,8 +73,9 @@ HOW_IT_WORKS = """
 **Ciclo completo**
 
 1. **Armar el PEI** (módulos 1–10): organización, DAFO, visión, objetivos, acciones, KPI, personas.
-2. **Ejecutar** (módulo 11): cargar actividades vinculadas a prioridades y objetivos del PEI.
-3. **Monitorear** (módulo 12): tablero con gráficos y tablas de avance (meta vs. real).
+2. **Consultar** (opcional): en DAFO, visión/misión, prioridades, KPI y personas podés vincular Google Forms y compartir el enlace con los grupos que defina la comisión.
+3. **Ejecutar** (módulo 11): cargar actividades vinculadas a prioridades y objetivos del PEI.
+4. **Monitorear** (módulo 12): tablero con gráficos y tablas de avance (meta vs. real).
 
 **Regla del tablero**
 

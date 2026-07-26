@@ -7,6 +7,8 @@ from typing import Any
 import pandas as pd
 import streamlit as st
 
+from planifica.surveys import list_configured_surveys
+
 
 def _txt(value: Any) -> str:
     text = str(value or "").strip()
@@ -129,5 +131,12 @@ def render_plan_preview(title: str, payload: dict[str, Any]) -> None:
                 }
             )
         st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+
+    surveys = list_configured_surveys(payload)
+    if surveys:
+        st.markdown("### 10 · Encuestas de consulta")
+        for s in surveys:
+            dest = f" · {s['destinatarios']}" if s.get("destinatarios") else ""
+            st.markdown(f"- **{s['etiqueta']}**: {s['url']}{dest}")
 
     st.caption("Generado con Rumbo · Manual COI (2020), Unidades 53–57")

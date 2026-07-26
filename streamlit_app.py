@@ -38,6 +38,7 @@ from planifica.monitoring import (
 )
 from planifica.preview import render_plan_preview
 from planifica.progress import module_completion, total_completion
+from planifica.surveys import list_configured_surveys, render_survey_panel
 from planifica.theme import inject_theme, metric_card, render_header
 from planifica.utils import demo_plan_payload, empty_plan_payload, generate_id
 
@@ -524,6 +525,7 @@ def page_edit() -> None:
     elif mod == "dafo":
         st.markdown("### Análisis DAFO")
         _module_help("dafo")
+        render_survey_panel("dafo", payload)
         dafo = payload.setdefault("dafo", {})
         c1, c2 = st.columns(2)
         with c1:
@@ -536,6 +538,7 @@ def page_edit() -> None:
     elif mod == "cimientos":
         st.markdown("### Cimientos estratégicos")
         _module_help("cimientos")
+        render_survey_panel("cimientos", payload)
         cim = payload.setdefault("cimientos", {})
         cim["vision"] = st.text_area("Visión", cim.get("vision", ""), height=100)
         cim["mision"] = st.text_area("Misión", cim.get("mision", ""), height=120)
@@ -544,6 +547,7 @@ def page_edit() -> None:
     elif mod == "prioridades":
         st.markdown("### Prioridades y objetivos SMART")
         _module_help("prioridades")
+        render_survey_panel("prioridades", payload)
         payload["prioridades"] = st.text_area(
             "Prioridades estratégicas (4 a 6, una por línea)",
             payload.get("prioridades", ""),
@@ -583,6 +587,7 @@ def page_edit() -> None:
     elif mod == "rendimiento":
         st.markdown("### Gestión y evaluación del rendimiento (Unidad 55)")
         _module_help("rendimiento")
+        render_survey_panel("rendimiento", payload)
         rend = payload.setdefault("rendimiento", {})
         rend["kpis"] = st.text_area(
             "Indicadores clave (KPI) vinculados a objetivos",
@@ -604,6 +609,7 @@ def page_edit() -> None:
     elif mod == "personas":
         st.markdown("### Recursos humanos y voluntarios (Unidades 56–57)")
         _module_help("personas")
+        render_survey_panel("personas", payload)
         rrhh = payload.setdefault("rrhh", {})
         vol = payload.setdefault("voluntarios", {})
         st.markdown("#### Personal")
@@ -627,6 +633,13 @@ def page_edit() -> None:
     elif mod == "resumen":
         st.markdown("### Resumen del plan")
         _module_help("resumen")
+        surveys = list_configured_surveys(payload)
+        if surveys:
+            st.markdown("#### Encuestas vinculadas")
+            for s in surveys:
+                dest = f" · Destinatarios: {s['destinatarios']}" if s.get("destinatarios") else ""
+                st.markdown(f"- **{s['etiqueta']}**{dest}")
+                st.link_button(f"Abrir · {s['titulo']}", s["url"], key=f"sum_survey_{s['modulo']}")
         md = plan_to_markdown(st.session_state.draft_title, payload)
         safe_name = (st.session_state.draft_title or "PEI")[:50]
         st.markdown("#### Descargar")

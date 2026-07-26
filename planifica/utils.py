@@ -75,6 +75,7 @@ def empty_plan_payload() -> dict:
         "proyectos_cartera": [],
         "tecnologia": {"notas_ia": "", "herramientas": ""},
         "actividades": [],
+        "encuestas": {},
     }
 
 
