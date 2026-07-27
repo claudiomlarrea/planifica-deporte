@@ -184,12 +184,19 @@ def page_auth() -> None:
     tab_login, tab_register = st.tabs(["Iniciar sesión", "Crear cuenta"])
 
     with tab_login:
-        name = st.text_input("Nombre de la federación, club o consultora", key="login_name")
+        name = st.text_input(
+            "Nombre de la federación, club o consultora",
+            key="login_name",
+            placeholder="Ej.: Deporte SA",
+        )
         pin = st.text_input("PIN", type="password", key="login_pin")
         if st.button("Ingresar", type="primary"):
             user = login_account(name, pin)
             if not user:
-                st.error("Credenciales incorrectas.")
+                st.error(
+                    "Credenciales incorrectas. Usá el **nombre completo** de la cuenta "
+                    "(ej. «Deporte SA», no solo «Deporte») y el PIN correcto."
+                )
             else:
                 increment_usage()
                 st.session_state.account = user
@@ -242,16 +249,22 @@ def page_panel() -> None:
             st.session_state.page = "new_plan"
             st.rerun()
 
-    st.markdown("#### Importar respaldo")
-    up = st.file_uploader("Archivo .json de Rumbo Deporte", type=["json"])
-    if up and st.button("Importar PEI"):
-        try:
-            title, payload = parse_plan_backup(up.getvalue())
-            create_plan(acc["id"], title, payload)
-            st.success("PEI importado.")
-            st.rerun()
-        except Exception as exc:
-            st.error(str(exc))
+    st.markdown("#### Respaldo del PEI")
+    st.caption(
+        "Guardá una copia en **.json** en tu computadora o en Drive. "
+        "Si la app se redeploya sin base persistente, podés **volver a importar** ese archivo."
+    )
+    imp_col, _ = st.columns([2, 1])
+    with imp_col:
+        up = st.file_uploader("Archivo .json de Rumbo Deporte", type=["json"])
+        if up and st.button("Importar PEI desde archivo"):
+            try:
+                title, payload = parse_plan_backup(up.getvalue())
+                create_plan(acc["id"], title, payload)
+                st.success("PEI importado.")
+                st.rerun()
+            except Exception as exc:
+                st.error(str(exc))
 
     if not plans:
         st.warning(
@@ -260,6 +273,32 @@ def page_panel() -> None:
         )
         return
 
+    st.markdown("**Descargar respaldo**")
+    for plan in plans:
+        pct = int(total_completion(plan["payload"]) * 100)
+        org = (plan["payload"].get("org") or {}).get("nombre") or "Sin nombre de org."
+        safe = "".join(c if c.isalnum() or c in " -_" else "_" for c in plan["title"][:50]).strip()
+        d1, d2, d3 = st.columns([4, 2, 2])
+        with d1:
+            st.markdown(f"**{plan['title']}** · {pct}% · {org}")
+            st.caption(f"Actualizado: {plan['updated_at'][:10]}")
+        with d2:
+            st.download_button(
+                "Descargar .json",
+                plan_backup_bytes(plan["title"], plan["payload"]),
+                file_name=f"{safe or 'pei'}.json",
+                mime="application/json",
+                type="primary",
+                use_container_width=True,
+                key=f"panel_json_{plan['id']}",
+            )
+        with d3:
+            if st.button("Editar plan", key=f"panel_ed_{plan['id']}", use_container_width=True):
+                load_plan_into_session(plan["id"])
+                st.rerun()
+        st.divider()
+
+    st.markdown("#### Más opciones por plan")
     for plan in plans:
         pct = int(total_completion(plan["payload"]) * 100)
         org = (plan["payload"].get("org") or {}).get("nombre") or "Sin nombre de org."
@@ -288,9 +327,10 @@ def page_panel() -> None:
                 )
             with b4:
                 st.download_button(
-                    "JSON",
+                    "JSON (respaldo)",
                     plan_backup_bytes(plan["title"], plan["payload"]),
                     file_name=f"{plan['title'][:40]}.json",
+                    mime="application/json",
                     key=f"json_{plan['id']}",
                 )
             with b5:
@@ -668,9 +708,10 @@ def page_edit() -> None:
             )
         with c3:
             st.download_button(
-                "Backup JSON",
+                "Descargar respaldo (.json)",
                 plan_backup_bytes(st.session_state.draft_title, payload),
                 file_name=f"{safe_name}.json",
+                mime="application/json",
                 use_container_width=True,
             )
         if st.button("Marcar plan como finalizado"):

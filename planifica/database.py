@@ -47,6 +47,15 @@ def register_account(name: str, pin: str) -> dict[str, Any]:
     aid = generate_id("acc")
     now = utc_now()
     with get_connection() as conn:
+        dup = conn.execute(
+            "SELECT id FROM accounts WHERE LOWER(name) = LOWER(?)",
+            (name,),
+        ).fetchone()
+        if dup:
+            raise ValueError(
+                "Ya existe una cuenta con ese nombre (mayúsculas/minúsculas no importan). "
+                "Usá «Iniciar sesión» con el mismo PIN."
+            )
         conn.execute(
             "INSERT INTO accounts (id, name, pin_hash, created_at) VALUES (?, ?, ?, ?)",
             (aid, name, hash_pin(pin), now),
@@ -55,10 +64,11 @@ def register_account(name: str, pin: str) -> dict[str, Any]:
 
 
 def login_account(name: str, pin: str) -> dict[str, Any] | None:
+    name = name.strip()
     with get_connection() as conn:
         row = conn.execute(
-            "SELECT id, name FROM accounts WHERE name = ? AND pin_hash = ?",
-            (name.strip(), hash_pin(pin)),
+            "SELECT id, name FROM accounts WHERE LOWER(name) = LOWER(?) AND pin_hash = ?",
+            (name, hash_pin(pin)),
         ).fetchone()
     return row_to_dict(row) if row else None
 
