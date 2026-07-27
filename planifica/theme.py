@@ -10,7 +10,7 @@ SURVEY_BLUE = "#2563EB"
 SURVEY_BLUE_DARK = "#1D4ED8"
 BORDER_SOFT = "#B8D4C8"
 
-APP_NAME = "Rumbo"
+APP_NAME = "Rumbo Deporte"
 TAGLINE = "PEI + actividades + tablero de monitoreo para clubes, federaciones y asociaciones"
 FOOTER = "Observatorio de Inteligencia Artificial · Metodología COI (2020)"
 

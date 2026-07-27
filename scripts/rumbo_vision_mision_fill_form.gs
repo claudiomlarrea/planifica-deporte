@@ -1,27 +1,27 @@
 /**
- * Rumbo — completar el formulario Visión / misión / valores YA CREADO
+ * Rumbo Deporte — completar el formulario Visión / misión / valores YA CREADO
  *
  * Formulario:
  * https://docs.google.com/forms/d/1M9TIbGMtZsV-m6oLqGxa9xg2jeaQtk1XQErdI2JIpZA/edit
  *
- * 1. En el proyecto RUMBO de script.google.com, pegá esta función en Código.gs
+ * 1. En el proyecto RUMBO DEPORTE de script.google.com, pegá esta función en Código.gs
  * 2. Ejecutá: fillRumboVisionMisionForm
- * 3. En Rumbo pegá el enlace RESPONDER (abajo)
+ * 3. En Rumbo Deporte pegá el enlace RESPONDER (abajo)
  */
 function fillRumboVisionMisionForm() {
   var FORM_ID = "1M9TIbGMtZsV-m6oLqGxa9xg2jeaQtk1XQErdI2JIpZA";
   var form = FormApp.openById(FORM_ID);
 
-  form.setTitle("Rumbo — Visión, misión y valores");
+  form.setTitle("Rumbo Deporte — Visión, misión y valores");
   form.setDescription(
     "Encuesta para aportar a la visión, la misión y los valores del Plan Estratégico Institucional (PEI).\n" +
-      "Respondé con tus palabras; la comisión sintetizará las respuestas en Rumbo."
+      "Respondé con tus palabras; la comisión sintetizará las respuestas en Rumbo Deporte."
   );
   form.setCollectEmail(false);
   form.setAllowResponseEdits(false);
   form.setProgressBar(true);
   form.setConfirmationMessage(
-    "¡Gracias! Tu aporte ayuda a definir la identidad del PEI en Rumbo."
+    "¡Gracias! Tu aporte ayuda a definir la identidad del PEI en Rumbo Deporte."
   );
 
   var items = form.getItems();
@@ -78,7 +78,7 @@ function fillRumboVisionMisionForm() {
     )
     .setRequired(false);
 
-  Logger.log("Listo. Pegá en Rumbo este enlace:");
+  Logger.log("Listo. Pegá en Rumbo Deporte este enlace:");
   Logger.log(
     "https://docs.google.com/forms/d/1M9TIbGMtZsV-m6oLqGxa9xg2jeaQtk1XQErdI2JIpZA/viewform"
   );

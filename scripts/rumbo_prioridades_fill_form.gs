@@ -1,5 +1,5 @@
 /**
- * Rumbo — completar formulario Prioridades y objetivos YA CREADO
+ * Rumbo Deporte — completar formulario Prioridades y objetivos YA CREADO
  * https://docs.google.com/forms/d/1TTuqNJTQOQQzjAXYHaQ6Flm1ytqAL6ynpAVWpU5cias/edit
  *
  * Ejecutar: fillRumboPrioridadesForm
@@ -8,10 +8,10 @@ function fillRumboPrioridadesForm() {
   var FORM_ID = "1TTuqNJTQOQQzjAXYHaQ6Flm1ytqAL6ynpAVWpU5cias";
   var form = FormApp.openById(FORM_ID);
 
-  form.setTitle("Rumbo — Prioridades y objetivos");
+  form.setTitle("Rumbo Deporte — Prioridades y objetivos");
   form.setDescription(
     "Encuesta para priorizar focos del PEI y proponer objetivos medibles.\n" +
-      "La comisión sintetizará las respuestas en Rumbo."
+      "La comisión sintetizará las respuestas en Rumbo Deporte."
   );
   form.setCollectEmail(false);
   form.setAllowResponseEdits(false);
@@ -80,7 +80,7 @@ function fillRumboPrioridadesForm() {
     )
     .setRequired(false);
 
-  Logger.log("Pegá en Rumbo (módulo 5) este enlace:");
+  Logger.log("Pegá en Rumbo Deporte (módulo 5) este enlace:");
   Logger.log(
     "https://docs.google.com/forms/d/1TTuqNJTQOQQzjAXYHaQ6Flm1ytqAL6ynpAVWpU5cias/viewform"
   );

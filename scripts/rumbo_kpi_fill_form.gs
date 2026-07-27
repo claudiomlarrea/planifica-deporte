@@ -1,18 +1,18 @@
 /**
- * Rumbo — completar formulario Indicadores (KPI) YA CREADO
- * https://docs.google.com/forms/d/1cAP85LQY6MA9JneiTj-x8Tg0Mudit1rra1CNca_wqLg/edit
+ * Rumbo Deporte — completar formulario Indicadores (KPI) YA CREADO
+ * https://docs.google.com/forms/d/10Wk_VE_-fuxp_Qcv0wznIl8w3WbXl5-YCL2kHLu_L-M/edit
  *
  * Ejecutar: fillRumboKpiForm
- * Pegar viewform en Rumbo → módulo 7 · Indicadores (KPI)
+ * Pegar viewform en Rumbo Deporte → módulo 7 · Indicadores (KPI)
  */
 function fillRumboKpiForm() {
-  var FORM_ID = "1cAP85LQY6MA9JneiTj-x8Tg0Mudit1rra1CNca_wqLg";
+  var FORM_ID = "10Wk_VE_-fuxp_Qcv0wznIl8w3WbXl5-YCL2kHLu_L-M";
   var form = FormApp.openById(FORM_ID);
 
-  form.setTitle("Rumbo — Indicadores (KPI)");
+  form.setTitle("Rumbo Deporte — Indicadores (KPI)");
   form.setDescription(
     "Encuesta para acordar qué resultados medir en el PEI y con qué frecuencia informar.\n" +
-      "La comisión sintetizará las respuestas en Rumbo."
+      "La comisión sintetizará las respuestas en Rumbo Deporte (Gestión y evaluación del rendimiento)."
   );
   form.setCollectEmail(false);
   form.setAllowResponseEdits(false);
@@ -85,8 +85,8 @@ function fillRumboKpiForm() {
     )
     .setRequired(false);
 
-  Logger.log("Pegá en Rumbo (módulo 7) este enlace:");
+  Logger.log("Pegá en Rumbo Deporte (módulo 7) este enlace:");
   Logger.log(
-    "https://docs.google.com/forms/d/1cAP85LQY6MA9JneiTj-x8Tg0Mudit1rra1CNca_wqLg/viewform"
+    "https://docs.google.com/forms/d/10Wk_VE_-fuxp_Qcv0wznIl8w3WbXl5-YCL2kHLu_L-M/viewform"
   );
 }

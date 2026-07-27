@@ -1,25 +1,25 @@
 /**
- * Rumbo — crear formulario Visión, misión y valores
+ * Rumbo Deporte — crear formulario Visión, misión y valores
  *
  * 1. Abrí https://script.google.com (misma cuenta dueña)
- * 2. Podés usar el proyecto RUMBO existente: Archivo → Nuevo → Archivo de secuencia
+ * 2. Podés usar el proyecto RUMBO DEPORTE existente: Archivo → Nuevo → Archivo de secuencia
  *    o pegar esta función debajo de buildRumboFodaForm en Código.gs
  * 3. Ejecutá buildRumboVisionMisionForm
  * 4. En el registro de ejecución copiá el enlace corto / viewform
- * 5. Pegalo en Rumbo → módulo 4 · Visión, misión y valores
+ * 5. Pegalo en Rumbo Deporte → módulo 4 · Visión, misión y valores
  */
 function buildRumboVisionMisionForm() {
-  var form = FormApp.create("Rumbo — Visión, misión y valores");
+  var form = FormApp.create("Rumbo Deporte — Visión, misión y valores");
 
   form.setDescription(
     "Encuesta para aportar a la visión, la misión y los valores del Plan Estratégico Institucional (PEI).\n" +
-      "Respondé con tus palabras; la comisión sintetizará las respuestas en Rumbo."
+      "Respondé con tus palabras; la comisión sintetizará las respuestas en Rumbo Deporte."
   );
   form.setCollectEmail(false);
   form.setAllowResponseEdits(false);
   form.setProgressBar(true);
   form.setConfirmationMessage(
-    "¡Gracias! Tu aporte ayuda a definir la identidad del PEI en Rumbo."
+    "¡Gracias! Tu aporte ayuda a definir la identidad del PEI en Rumbo Deporte."
   );
 
   form
@@ -72,5 +72,5 @@ function buildRumboVisionMisionForm() {
     .setRequired(false);
 
   Logger.log("EDITAR: " + form.getEditUrl());
-  Logger.log("RESPONDER (pegar en Rumbo): " + form.getPublishedUrl());
+  Logger.log("RESPONDER (pegar en Rumbo Deporte): " + form.getPublishedUrl());
 }

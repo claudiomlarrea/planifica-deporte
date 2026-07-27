@@ -139,4 +139,4 @@ def render_plan_preview(title: str, payload: dict[str, Any]) -> None:
             dest = f" · {s['destinatarios']}" if s.get("destinatarios") else ""
             st.markdown(f"- **{s['etiqueta']}**: {s['url']}{dest}")
 
-    st.caption("Generado con Rumbo · Manual COI (2020), Unidades 53–57")
+    st.caption("Generado con Rumbo Deporte · Manual COI (2020), Unidades 53–57")

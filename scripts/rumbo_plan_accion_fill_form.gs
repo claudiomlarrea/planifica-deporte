@@ -1,18 +1,18 @@
 /**
- * Rumbo — completar formulario Plan de acción YA CREADO
+ * Rumbo Deporte — completar formulario Plan de acción YA CREADO
  * https://docs.google.com/forms/d/1cAP85LQY6MA9JneiTj-x8Tg0Mudit1rra1CNca_wqLg/edit
  *
  * Ejecutar: fillRumboPlanAccionForm
- * Pegar viewform en Rumbo → módulo 6 · Plan de acción
+ * Pegar viewform en Rumbo Deporte → módulo 6 · Plan de acción
  */
 function fillRumboPlanAccionForm() {
   var FORM_ID = "1cAP85LQY6MA9JneiTj-x8Tg0Mudit1rra1CNca_wqLg";
   var form = FormApp.openById(FORM_ID);
 
-  form.setTitle("Rumbo — Plan de acción");
+  form.setTitle("Rumbo Deporte — Plan de acción");
   form.setDescription(
     "Encuesta para proponer o validar acciones concretas del PEI: qué hacer, quién, cuándo y con qué recursos.\n" +
-      "La comisión sintetizará las respuestas en Rumbo."
+      "La comisión sintetizará las respuestas en Rumbo Deporte."
   );
   form.setCollectEmail(false);
   form.setAllowResponseEdits(false);
@@ -85,7 +85,7 @@ function fillRumboPlanAccionForm() {
     .setTitle("8. (Opcional) ¿Otra acción que debería estar en el plan?")
     .setRequired(false);
 
-  Logger.log("Pegá en Rumbo (módulo 6 · Plan de acción) este enlace:");
+  Logger.log("Pegá en Rumbo Deporte (módulo 6 · Plan de acción) este enlace:");
   Logger.log(
     "https://docs.google.com/forms/d/1cAP85LQY6MA9JneiTj-x8Tg0Mudit1rra1CNca_wqLg/viewform"
   );

@@ -1,4 +1,4 @@
-# Rumbo
+# Rumbo Deporte
 
 Sistema de planificación estratégica para **clubes, federaciones, asociaciones y organizaciones deportivas**, alineado al Manual COI (2020) Unidades 53–57.
 
