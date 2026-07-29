@@ -638,17 +638,21 @@ def page_edit() -> None:
         _module_help("rendimiento")
         kpis = sync_kpis_from_acciones(payload)
         render_survey_panel("rendimiento", payload)
-        st.markdown("#### Indicadores del plan (desde el plan de acción)")
+        st.markdown("#### Indicadores KPI del plan (desde el plan de acción)")
         if kpis:
-            for kpi in kpis:
-                st.markdown(f"- {kpi}")
+            lista = "".join(f"<li><strong>KPI:</strong> {kpi}</li>" for kpi in kpis)
+            st.markdown(
+                f'<ul class="rumbo-kpi-list" style="margin:0.25rem 0 0.5rem 1.1rem;padding:0;line-height:1.35;">'
+                f"{lista}</ul>",
+                unsafe_allow_html=True,
+            )
             st.caption(
-                "Estos KPI se toman automáticamente del **módulo 6 · Plan de acción**. "
+                "Se toman automáticamente del **módulo 6 · Plan de acción**. "
                 "Para modificarlos, editá la columna KPI de esa tabla."
             )
         else:
             st.warning(
-                "Todavía no hay KPI en el plan de acción. "
+                "Todavía no hay indicadores KPI en el plan de acción. "
                 "Completá la columna **kpi** en el módulo 6."
             )
         rend = payload.setdefault("rendimiento", {})
