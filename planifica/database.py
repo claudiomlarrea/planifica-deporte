@@ -38,8 +38,37 @@ CREATE TABLE IF NOT EXISTS app_stats (
 
 
 def init_schema() -> None:
+    """Crea tablas si no existen (SQLite local o PostgreSQL/Neon)."""
+    statements = [
+        """
+        CREATE TABLE IF NOT EXISTS accounts (
+            id TEXT PRIMARY KEY,
+            name TEXT NOT NULL UNIQUE,
+            pin_hash TEXT NOT NULL,
+            created_at TEXT NOT NULL
+        )
+        """,
+        """
+        CREATE TABLE IF NOT EXISTS plans (
+            id TEXT PRIMARY KEY,
+            account_id TEXT NOT NULL,
+            title TEXT NOT NULL,
+            payload TEXT NOT NULL,
+            status TEXT NOT NULL DEFAULT 'borrador',
+            created_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL
+        )
+        """,
+        """
+        CREATE TABLE IF NOT EXISTS app_stats (
+            key TEXT PRIMARY KEY,
+            value INTEGER NOT NULL
+        )
+        """,
+    ]
     with get_connection() as conn:
-        conn.executescript(SCHEMA)
+        for stmt in statements:
+            conn.execute(stmt.strip())
 
 
 def register_account(name: str, pin: str) -> dict[str, Any]:
@@ -161,8 +190,17 @@ def duplicate_plan(plan_id: str, account_id: str) -> dict[str, Any] | None:
 
 
 def get_usage_count() -> int:
-    with get_connection() as conn:
-        row = conn.execute("SELECT value FROM app_stats WHERE key = ?", ("sessions",)).fetchone()
+    try:
+        with get_connection() as conn:
+            row = conn.execute(
+                "SELECT value FROM app_stats WHERE key = ?", ("sessions",)
+            ).fetchone()
+    except Exception:
+        init_schema()
+        with get_connection() as conn:
+            row = conn.execute(
+                "SELECT value FROM app_stats WHERE key = ?", ("sessions",)
+            ).fetchone()
     if not row:
         return 0
     d = row_to_dict(row)
@@ -170,10 +208,20 @@ def get_usage_count() -> int:
 
 
 def increment_usage() -> None:
-    with get_connection() as conn:
-        conn.execute(
-            """
-            INSERT INTO app_stats (key, value) VALUES ('sessions', 1)
-            ON CONFLICT(key) DO UPDATE SET value = app_stats.value + 1
-            """
-        )
+    try:
+        with get_connection() as conn:
+            conn.execute(
+                """
+                INSERT INTO app_stats (key, value) VALUES ('sessions', 1)
+                ON CONFLICT (key) DO UPDATE SET value = app_stats.value + 1
+                """
+            )
+    except Exception:
+        init_schema()
+        with get_connection() as conn:
+            conn.execute(
+                """
+                INSERT INTO app_stats (key, value) VALUES ('sessions', 1)
+                ON CONFLICT (key) DO UPDATE SET value = app_stats.value + 1
+                """
+            )

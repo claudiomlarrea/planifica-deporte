@@ -76,7 +76,8 @@ def ensure_state() -> None:
 
 
 @st.cache_resource
-def bootstrap_db() -> bool:
+def bootstrap_db(backend: str = "sqlite") -> bool:
+    """backend se usa como clave de caché (sqlite vs postgres) para recrear tablas al cambiar Secrets."""
     init_schema()
     return True
 
@@ -943,7 +944,9 @@ def page_edit() -> None:
 
 
 def main() -> None:
-    bootstrap_db()
+    from planifica.db_backend import using_postgres
+
+    bootstrap_db("postgres" if using_postgres() else "sqlite")
     ensure_state()
     inject_theme()
     render_header()
