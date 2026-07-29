@@ -1,15 +1,15 @@
 /**
- * Rumbo Deporte — completar formulario Personas y voluntarios YA CREADO
+ * Rumbo Deporte — completar formulario Recursos humanos y voluntarios YA CREADO
  * https://docs.google.com/forms/d/1fRQ7Z7Yck2ncT2ztJAPFaDnZEislW7_V_PZeoV-QC4s/edit
  *
  * Ejecutar: fillRumboPersonasForm
- * Pegar viewform en Rumbo Deporte → módulo 8 · Personas y voluntarios
+ * Pegar viewform en Rumbo Deporte → módulo 8 · Recursos humanos y voluntarios
  */
 function fillRumboPersonasForm() {
   var FORM_ID = "1fRQ7Z7Yck2ncT2ztJAPFaDnZEislW7_V_PZeoV-QC4s";
   var form = FormApp.openById(FORM_ID);
 
-  form.setTitle("Rumbo Deporte — Personas y voluntarios");
+  form.setTitle("Rumbo Deporte — Recursos humanos y voluntarios");
   form.setDescription(
     "Encuesta para detectar roles críticos, brechas de formación y motivaciones del voluntariado que sostienen el PEI.\n" +
       "La comisión sintetizará las respuestas en Rumbo Deporte."
@@ -18,7 +18,7 @@ function fillRumboPersonasForm() {
   form.setAllowResponseEdits(false);
   form.setProgressBar(true);
   form.setConfirmationMessage(
-    "¡Gracias! Tu aporte ayuda a planificar personas y voluntariado del PEI."
+    "¡Gracias! Tu aporte ayuda a planificar recursos humanos y voluntariado del PEI."
   );
 
   var items = form.getItems();

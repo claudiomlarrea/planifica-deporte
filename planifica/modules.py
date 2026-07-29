@@ -10,7 +10,7 @@ MODULE_ORDER: list[tuple[str, str]] = [
     ("prioridades", "5 · Prioridades y objetivos"),
     ("acciones", "6 · Plan de acción"),
     ("rendimiento", "7 · Indicadores (KPI)"),
-    ("personas", "8 · Personas y voluntarios"),
+    ("personas", "8 · Recursos humanos y voluntarios"),
     ("proyectos", "9 · Primer proyecto (opcional)"),
     ("resumen", "10 · Resumen y exportación"),
     ("actividades", "11 · Actividades de ejecución"),
@@ -41,15 +41,17 @@ MODULE_HELP: dict[str, str] = {
         "(medibles y con plazo). Consultá prioridades a clubes y referentes con un formulario."
     ),
     "acciones": (
-        "Convertí los objetivos en acciones concretas: qué, quién, cuándo, con qué recursos y KPI. "
+        "Convertí cada objetivo en acciones concretas: qué, quién, cuándo y con qué recursos. "
+        "El KPI de esta tabla mide el avance de esa acción (operativo). "
         "Podés consultar a áreas y clubes con un formulario antes de cerrar la tabla."
     ),
     "rendimiento": (
-        "Definí cómo van a saber si el PEI avanza: indicadores e informes al comité. "
+        "Definí los indicadores institucionales del PEI: miden si se cumplen los objetivos SMART "
+        "(no cada tarea suelta). Acá también se define frecuencia de evaluación e informes al comité. "
         "Una encuesta sirve para acordar qué KPI importan a la organización."
     ),
     "personas": (
-        "El PEI se ejecuta con personas: roles, formación y voluntariado. "
+        "El PEI se ejecuta con recursos humanos y voluntariado: roles, formación y retención. "
         "Encuestá a staff y voluntarios para detectar necesidades y motivaciones."
     ),
     "proyectos": (
@@ -73,8 +75,8 @@ MODULE_HELP: dict[str, str] = {
 HOW_IT_WORKS = """
 **Ciclo completo**
 
-1. **Armar el PEI** (módulos 1–10): organización, DAFO, visión, objetivos, acciones, KPI, personas.
-2. **Consultar** (opcional): en DAFO, visión/misión, prioridades, KPI y personas podés vincular Google Forms y compartir el enlace con los grupos que defina la comisión.
+1. **Armar el PEI** (módulos 1–10): organización, DAFO, visión, objetivos, acciones, KPI, recursos humanos y voluntarios.
+2. **Consultar** (opcional): en DAFO, visión/misión, prioridades, KPI y RR.HH. podés vincular Google Forms y compartir el enlace con los grupos que defina la comisión.
 3. **Ejecutar** (módulo 11): cargar actividades vinculadas a prioridades y objetivos del PEI.
 4. **Monitorear** (módulo 12): tablero con gráficos y tablas de avance (meta vs. real).
 

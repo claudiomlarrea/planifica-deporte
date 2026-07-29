@@ -133,7 +133,7 @@ def demo_plan_payload() -> dict:
             "accion": "Escuelas en 10 clubes nuevos",
             "responsable": "Área desarrollo",
             "plazo": "2026–2027",
-            "kpi": "Judocas sub-13",
+            "kpi": "Escuelas de iniciación activas",
             "recursos": "Tatamis, becas",
             "estado": "Planificado",
         },
@@ -142,12 +142,16 @@ def demo_plan_payload() -> dict:
             "accion": "Cursos de certificación anuales",
             "responsable": "Secretaría técnica",
             "plazo": "2026–2028",
-            "kpi": "Entrenadores certificados",
+            "kpi": "Entrenadores certificados en el período",
             "recursos": "Docentes, aula",
             "estado": "Planificado",
         },
     ]
-    data["rendimiento"]["kpis"] = "Afiliados · Clubes · Entrenadores certificados · % mujeres"
+    data["rendimiento"]["kpis"] = (
+        "Afiliados infantiles activos\n"
+        "Escuelas de iniciación activas\n"
+        "Entrenadores certificados vigentes"
+    )
     data["rendimiento"]["frecuencia_evaluacion"] = "Informe mensual al comité; evaluación anual."
     data["actividades"] = [
         {

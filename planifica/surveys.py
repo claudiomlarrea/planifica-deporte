@@ -88,7 +88,7 @@ SURVEY_MODULES: dict[str, dict[str, str]] = {
         ),
     },
     "personas": {
-        "titulo": "Encuesta personas y voluntarios",
+        "titulo": "Encuesta recursos humanos y voluntarios",
         "para_que": (
             "Detectar roles críticos, brechas de formación y motivaciones del "
             "voluntariado para sostener el PEI."

@@ -122,7 +122,7 @@ def plan_to_html(title: str, payload: dict[str, Any]) -> str:
       {_block("Indicadores (KPI)", rend.get("kpis"))}
       {_block("Frecuencia de evaluación", rend.get("frecuencia_evaluacion"))}
       {_block("Informes al comité", rend.get("informes_comite"))}
-      <h3>6 · Personas y voluntarios</h3>
+      <h3>6 · Recursos humanos y voluntarios</h3>
       {_block("Roles clave", rrhh.get("roles_clave"))}
       {_block("Brechas de formación", rrhh.get("brechas_formacion"))}
       {_block("Reclutamiento", rrhh.get("reclutamiento"))}
@@ -208,7 +208,7 @@ def plan_to_markdown(title: str, payload: dict[str, Any]) -> str:
             _line("Frecuencia de evaluación", rend.get("frecuencia_evaluacion", "")),
             _line("Informes al comité", rend.get("informes_comite", "")),
             "",
-            "## 6. Personas y voluntarios",
+            "## 6. Recursos humanos y voluntarios",
             _line("Roles clave", rrhh.get("roles_clave", "")),
             _line("Brechas de formación", rrhh.get("brechas_formacion", "")),
             _line("Reclutamiento", rrhh.get("reclutamiento", "")),
@@ -365,7 +365,7 @@ def plan_to_docx(title: str, payload: dict[str, Any]) -> bytes:
     _docx_para(doc, "Frecuencia", rend.get("frecuencia_evaluacion"))
     _docx_para(doc, "Informes al comité", rend.get("informes_comite"))
 
-    doc.add_heading("6. Personas y voluntarios", level=1)
+    doc.add_heading("6. Recursos humanos y voluntarios", level=1)
     _docx_para(doc, "Roles clave", rrhh.get("roles_clave"))
     _docx_para(doc, "Brechas de formación", rrhh.get("brechas_formacion"))
     _docx_para(doc, "Reclutamiento", rrhh.get("reclutamiento"))

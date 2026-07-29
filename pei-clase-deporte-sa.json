@@ -57,7 +57,7 @@
         "accion": "Abrir escuelas de iniciación en 12 clubes afiliados",
         "responsable": "Área de desarrollo",
         "plazo": "2026–2027",
-        "kpi": "Escuelas activas / afiliados infantiles",
+        "kpi": "Escuelas de iniciación activas",
         "recursos": "Material didáctico, tatamis/equipamiento, becas parciales",
         "estado": "En curso"
       },
@@ -66,7 +66,7 @@
         "accion": "Ciclo anual de cursos de certificación (2 cohortes/año)",
         "responsable": "Secretaría técnica",
         "plazo": "2026–2028",
-        "kpi": "Entrenadores certificados",
+        "kpi": "Entrenadores certificados en el período",
         "recursos": "Docentes, aula/virtual, material COI/federativo",
         "estado": "Planificado"
       },
@@ -75,7 +75,7 @@
         "accion": "Calendario de 8 eventos formativos con difusión unificada",
         "responsable": "Comisión de competencias + comunicación",
         "plazo": "Anual 2026–2030",
-        "kpi": "Eventos realizados / participantes",
+        "kpi": "Eventos formativos realizados",
         "recursos": "Sedés, jueces, live/redes, protocolo",
         "estado": "Planificado"
       },
@@ -84,13 +84,22 @@
         "accion": "Cartera de patrocinio y convenios municipales",
         "responsable": "Presidencia / marketing",
         "plazo": "2026–2027",
-        "kpi": "Sponsors firmados / ingresos no cuotas",
+        "kpi": "Sponsors o convenios firmados",
         "recursos": "Dossier comercial, CRM básico, eventos de networking",
+        "estado": "En curso"
+      },
+      {
+        "prioridad": "Gobernanza, datos y evaluación continua",
+        "accion": "Publicar informe trimestral de avance del PEI al comité ejecutivo",
+        "responsable": "Dirección de planificación",
+        "plazo": "Trimestral 2026–2030",
+        "kpi": "Informes de avance del PEI publicados",
+        "recursos": "Tablero Rumbo Deporte, actas, planilla de KPI",
         "estado": "En curso"
       }
     ],
     "rendimiento": {
-      "kpis": "Afiliados infantiles activos\nClubes con escuela de iniciación abierta\nEntrenadores certificados vigentes\nParticipantes en torneos formativos\n% mujeres en la base y en cuerpo técnico\nIngresos por patrocinio vs. cuotas\nTasa de retención de voluntarios en eventos clave",
+      "kpis": "Afiliados infantiles activos (6–12)\nEscuelas de iniciación activas\nEntrenadores certificados vigentes\nParticipantes en torneos formativos\nSponsors o convenios institucionales vigentes\nInformes de avance del PEI publicados",
       "frecuencia_evaluacion": "Seguimiento mensual operativo (tablero de actividades).\nRevisión trimestral de KPI vs. meta en comité ejecutivo.\nEvaluación anual del PEI (esperado vs. real) con ajuste de acciones.",
       "informes_comite": "Informe mensual de avance de actividades (módulo Tablero).\nInforme trimestral al comité: semáforo de prioridades, riesgos y decisiones.\nInforme anual a asamblea: cumplimiento de objetivos SMART y propuesta de ajuste."
     },
@@ -118,7 +127,7 @@
         "fecha_inicio": "2026-02-01",
         "fecha_fin": "2026-07-31",
         "estado": "En curso",
-        "kpi_nombre": "Escuelas activas",
+        "kpi_nombre": "Escuelas de iniciación activas",
         "meta": 6,
         "avance": 3,
         "unidad": "escuelas",
@@ -135,7 +144,7 @@
         "fecha_inicio": "2026-03-01",
         "fecha_fin": "2026-05-15",
         "estado": "Cumplida",
-        "kpi_nombre": "Entrenadores certificados",
+        "kpi_nombre": "Entrenadores certificados en el período",
         "meta": 25,
         "avance": 28,
         "unidad": "personas",
@@ -152,10 +161,10 @@
         "fecha_inicio": "2026-05-10",
         "fecha_fin": "2026-05-11",
         "estado": "Planificada",
-        "kpi_nombre": "Participantes",
-        "meta": 180,
+        "kpi_nombre": "Eventos formativos realizados",
+        "meta": 1,
         "avance": 0,
-        "unidad": "deportistas",
+        "unidad": "eventos",
         "notas": "Aún no ejecutada — aparece en tablero como Planificada."
       },
       {
@@ -169,7 +178,7 @@
         "fecha_inicio": "2026-01-15",
         "fecha_fin": "2026-12-15",
         "estado": "En curso",
-        "kpi_nombre": "Sponsors firmados",
+        "kpi_nombre": "Sponsors o convenios firmados",
         "meta": 2,
         "avance": 1,
         "unidad": "convenios",
@@ -180,17 +189,17 @@
         "titulo": "Informe trimestral Q1 al comité ejecutivo",
         "prioridad": "Gobernanza, datos y evaluación continua",
         "objetivo": "Publicar un informe de avance del PEI cada trimestre al comité.",
-        "accion_pei": "",
+        "accion_pei": "Publicar informe trimestral de avance del PEI al comité ejecutivo",
         "responsable": "Dirección de planificación",
         "periodo": "2026-Q1",
         "fecha_inicio": "2026-03-20",
         "fecha_fin": "2026-04-05",
         "estado": "Cumplida",
-        "kpi_nombre": "Informes publicados",
+        "kpi_nombre": "Informes de avance del PEI publicados",
         "meta": 1,
         "avance": 1,
         "unidad": "informes",
-        "notas": "Vincula el módulo Rendimiento con el Tablero."
+        "notas": "Vincula el módulo Indicadores (KPI) con el Tablero."
       },
       {
         "id": "act_clase_6",
@@ -203,10 +212,10 @@
         "fecha_inicio": "",
         "fecha_fin": "",
         "estado": "Borrador",
-        "kpi_nombre": "Escuelas en convenio escolar",
+        "kpi_nombre": "Escuelas de iniciación activas",
         "meta": 5,
         "avance": 0,
-        "unidad": "convenios",
+        "unidad": "escuelas",
         "notas": "Ejemplo didáctico: los Borradores NO entran al tablero hasta cambiar de estado."
       }
     ]

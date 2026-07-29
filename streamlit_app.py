@@ -605,6 +605,10 @@ def page_edit() -> None:
     elif mod == "acciones":
         st.markdown("### Plan de acción operativo")
         _module_help("acciones")
+        st.caption(
+            "El **KPI de cada fila** mide esa acción (operativo). "
+            "Los indicadores institucionales del PEI se definen en el **módulo 7**."
+        )
         render_survey_panel("acciones", payload)
         rows = payload.get("acciones") or []
         if not rows:
@@ -630,12 +634,17 @@ def page_edit() -> None:
     elif mod == "rendimiento":
         st.markdown("### Gestión y evaluación del rendimiento (Unidad 55)")
         _module_help("rendimiento")
+        st.caption(
+            "Estos KPI miden el **resultado del PEI** (objetivos SMART). "
+            "No reemplazan el KPI de cada acción del módulo 6: se complementan."
+        )
         render_survey_panel("rendimiento", payload)
         rend = payload.setdefault("rendimiento", {})
         rend["kpis"] = st.text_area(
-            "Indicadores clave (KPI) vinculados a objetivos",
+            "Indicadores clave (KPI) vinculados a objetivos SMART",
             rend.get("kpis", ""),
             height=120,
+            placeholder="Uno por línea, alineados a los objetivos del módulo 5.",
         )
         rend["frecuencia_evaluacion"] = st.text_area(
             "Frecuencia de evaluación",
@@ -655,7 +664,7 @@ def page_edit() -> None:
         render_survey_panel("personas", payload)
         rrhh = payload.setdefault("rrhh", {})
         vol = payload.setdefault("voluntarios", {})
-        st.markdown("#### Personal")
+        st.markdown("#### Personal / recursos humanos")
         rrhh["roles_clave"] = st.text_area("Roles críticos", rrhh.get("roles_clave", ""), height=100)
         rrhh["brechas_formacion"] = st.text_area("Brechas de formación", rrhh.get("brechas_formacion", ""), height=100)
         rrhh["reclutamiento"] = st.text_area("Reclutamiento y ubicación por competencias", rrhh.get("reclutamiento", ""), height=100)

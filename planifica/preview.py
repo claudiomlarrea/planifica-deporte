@@ -95,7 +95,7 @@ def render_plan_preview(title: str, payload: dict[str, Any]) -> None:
     _block("Frecuencia de evaluación", rend.get("frecuencia_evaluacion"))
     _block("Informes al comité", rend.get("informes_comite"))
 
-    st.markdown("### 6 · Personas y voluntarios")
+    st.markdown("### 6 · Recursos humanos y voluntarios")
     _block("Roles clave", rrhh.get("roles_clave"))
     _block("Brechas de formación", rrhh.get("brechas_formacion"))
     _block("Reclutamiento", rrhh.get("reclutamiento"))
