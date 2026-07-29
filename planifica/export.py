@@ -119,7 +119,7 @@ def plan_to_html(title: str, payload: dict[str, Any]) -> str:
       <h3>4 · Plan de acción</h3>
       {acciones_html}
       <h3>5 · Indicadores y evaluación</h3>
-      {_block("Indicadores (KPI)", rend.get("kpis"))}
+      {_block("Indicadores del plan de acción (KPI)", rend.get("kpis"))}
       {_block("Frecuencia de evaluación", rend.get("frecuencia_evaluacion"))}
       {_block("Informes al comité", rend.get("informes_comite"))}
       <h3>6 · Recursos humanos y voluntarios</h3>
@@ -203,8 +203,8 @@ def plan_to_markdown(title: str, payload: dict[str, Any]) -> str:
 
     lines.extend(
         [
-            "## 5. Indicadores y evaluación",
-            _line("Indicadores (KPI)", rend.get("kpis", "")),
+            "## 5. Evaluación e informes",
+            _line("Indicadores del plan de acción (KPI)", rend.get("kpis", "")),
             _line("Frecuencia de evaluación", rend.get("frecuencia_evaluacion", "")),
             _line("Informes al comité", rend.get("informes_comite", "")),
             "",
@@ -360,8 +360,8 @@ def plan_to_docx(title: str, payload: dict[str, Any]) -> bytes:
     if n == 0:
         doc.add_paragraph("Sin acciones registradas.")
 
-    doc.add_heading("5. Indicadores y evaluación", level=1)
-    _docx_para(doc, "KPI", rend.get("kpis"))
+    doc.add_heading("5. Evaluación e informes", level=1)
+    _docx_para(doc, "Indicadores del plan de acción (KPI)", rend.get("kpis"))
     _docx_para(doc, "Frecuencia", rend.get("frecuencia_evaluacion"))
     _docx_para(doc, "Informes al comité", rend.get("informes_comite"))
 

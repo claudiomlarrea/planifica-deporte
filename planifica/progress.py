@@ -56,7 +56,11 @@ def module_completion(payload: dict) -> dict[str, float]:
         if _filled(payload.get("prioridades")) and _filled(payload.get("objetivos_smart"))
         else (0.5 if _filled(payload.get("prioridades")) or _filled(payload.get("objetivos_smart")) else 0.0),
         "acciones": 1.0 if _filled(payload.get("acciones")) else 0.0,
-        "rendimiento": ratio(["kpis", "frecuencia_evaluacion", "informes_comite"], rend),
+        "rendimiento": (
+            (0.4 if any(str((a or {}).get("kpi") or "").strip() for a in (payload.get("acciones") or [])) else 0.0)
+            + (0.3 if _filled(rend.get("frecuencia_evaluacion")) else 0.0)
+            + (0.3 if _filled(rend.get("informes_comite")) else 0.0)
+        ),
         "personas": (ratio(["roles_clave", "brechas_formacion"], rrhh) + ratio(["necesidades", "formacion"], vol)) / 2,
         "actividades": 1.0 if _filled(payload.get("actividades")) else 0.0,
         "tablero": 1.0

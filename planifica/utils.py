@@ -148,9 +148,8 @@ def demo_plan_payload() -> dict:
         },
     ]
     data["rendimiento"]["kpis"] = (
-        "Afiliados infantiles activos\n"
         "Escuelas de iniciación activas\n"
-        "Entrenadores certificados vigentes"
+        "Entrenadores certificados en el período"
     )
     data["rendimiento"]["frecuencia_evaluacion"] = "Informe mensual al comité; evaluación anual."
     data["actividades"] = [

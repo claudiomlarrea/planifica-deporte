@@ -9,7 +9,7 @@ MODULE_ORDER: list[tuple[str, str]] = [
     ("cimientos", "4 · Visión, misión y valores"),
     ("prioridades", "5 · Prioridades y objetivos"),
     ("acciones", "6 · Plan de acción"),
-    ("rendimiento", "7 · Indicadores (KPI)"),
+    ("rendimiento", "7 · Evaluación e informes"),
     ("personas", "8 · Recursos humanos y voluntarios"),
     ("proyectos", "9 · Primer proyecto (opcional)"),
     ("resumen", "10 · Resumen y exportación"),
@@ -41,14 +41,14 @@ MODULE_HELP: dict[str, str] = {
         "(medibles y con plazo). Consultá prioridades a clubes y referentes con un formulario."
     ),
     "acciones": (
-        "Convertí cada objetivo en acciones concretas: qué, quién, cuándo y con qué recursos. "
-        "El KPI de esta tabla mide el avance de esa acción (operativo). "
+        "Convertí cada objetivo en acciones concretas: qué, quién, cuándo, con qué recursos y KPI. "
+        "Acá se definen los indicadores una sola vez (uno por acción). "
         "Podés consultar a áreas y clubes con un formulario antes de cerrar la tabla."
     ),
     "rendimiento": (
-        "Definí los indicadores institucionales del PEI: miden si se cumplen los objetivos SMART "
-        "(no cada tarea suelta). Acá también se define frecuencia de evaluación e informes al comité. "
-        "Una encuesta sirve para acordar qué KPI importan a la organización."
+        "No se vuelven a escribir KPI: se toman del plan de acción. "
+        "Acá definís cómo se evalúa el PEI (frecuencia) y qué informes recibe el comité. "
+        "Una encuesta sirve para acordar calendario de seguimiento."
     ),
     "personas": (
         "El PEI se ejecuta con recursos humanos y voluntariado: roles, formación y retención. "

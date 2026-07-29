@@ -99,7 +99,7 @@
       }
     ],
     "rendimiento": {
-      "kpis": "Afiliados infantiles activos (6–12)\nEscuelas de iniciación activas\nEntrenadores certificados vigentes\nParticipantes en torneos formativos\nSponsors o convenios institucionales vigentes\nInformes de avance del PEI publicados",
+      "kpis": "Escuelas de iniciación activas\nEntrenadores certificados en el período\nEventos formativos realizados\nSponsors o convenios firmados\nInformes de avance del PEI publicados",
       "frecuencia_evaluacion": "Seguimiento mensual operativo (tablero de actividades).\nRevisión trimestral de KPI vs. meta en comité ejecutivo.\nEvaluación anual del PEI (esperado vs. real) con ajuste de acciones.",
       "informes_comite": "Informe mensual de avance de actividades (módulo Tablero).\nInforme trimestral al comité: semáforo de prioridades, riesgos y decisiones.\nInforme anual a asamblea: cumplimiento de objetivos SMART y propuesta de ajuste."
     },

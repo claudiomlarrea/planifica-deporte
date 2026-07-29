@@ -70,8 +70,28 @@ def action_options(payload: dict[str, Any]) -> list[str]:
     return opts
 
 
+def kpis_from_acciones(payload: dict[str, Any]) -> list[str]:
+    """KPI únicos del plan de acción (fuente única de indicadores)."""
+    opts: list[str] = []
+    seen: set[str] = set()
+    for a in payload.get("acciones") or []:
+        text = str(a.get("kpi") or "").strip()
+        if text and text not in seen:
+            seen.add(text)
+            opts.append(text)
+    return opts
+
+
+def sync_kpis_from_acciones(payload: dict[str, Any]) -> list[str]:
+    """Copia los KPI del plan de acción al bloque rendimiento (sin duplicar definición)."""
+    kpis = kpis_from_acciones(payload)
+    rend = payload.setdefault("rendimiento", {})
+    rend["kpis"] = "\n".join(kpis)
+    return kpis
+
+
 def kpi_options(payload: dict[str, Any]) -> list[str]:
-    """KPI del módulo 7, de acciones del plan y de actividades ya cargadas."""
+    """KPI del plan de acción y de actividades ya cargadas."""
     opts: list[str] = []
     seen: set[str] = set()
 
@@ -79,7 +99,6 @@ def kpi_options(payload: dict[str, Any]) -> list[str]:
         text = str(value or "").strip()
         if not text:
             return
-        # Líneas tipo "Afiliados · Clubes · Entrenadores"
         parts = [p.strip() for p in text.replace(";", "\n").split("·")]
         for part in parts:
             for line in parse_lines(part):
@@ -87,10 +106,8 @@ def kpi_options(payload: dict[str, Any]) -> list[str]:
                     seen.add(line)
                     opts.append(line)
 
-    rend = payload.get("rendimiento") or {}
-    add(rend.get("kpis"))
-    for a in payload.get("acciones") or []:
-        add(a.get("kpi"))
+    for kpi in kpis_from_acciones(payload):
+        add(kpi)
     for a in payload.get("actividades") or []:
         add(a.get("kpi_nombre"))
     return opts

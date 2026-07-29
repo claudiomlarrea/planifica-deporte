@@ -90,8 +90,8 @@ def render_plan_preview(title: str, payload: dict[str, Any]) -> None:
     else:
         st.caption("Sin acciones registradas.")
 
-    st.markdown("### 5 · Indicadores y evaluación")
-    _block("Indicadores (KPI)", rend.get("kpis"))
+    st.markdown("### 5 · Evaluación e informes")
+    _block("Indicadores del plan de acción (KPI)", rend.get("kpis"))
     _block("Frecuencia de evaluación", rend.get("frecuencia_evaluacion"))
     _block("Informes al comité", rend.get("informes_comite"))
 

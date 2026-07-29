@@ -36,6 +36,7 @@ from planifica.monitoring import (
     kpi_options,
     objective_options,
     priority_options,
+    sync_kpis_from_acciones,
 )
 from planifica.preview import render_plan_preview
 from planifica.progress import module_completion, total_completion
@@ -606,8 +607,8 @@ def page_edit() -> None:
         st.markdown("### Plan de acción operativo")
         _module_help("acciones")
         st.caption(
-            "El **KPI de cada fila** mide esa acción (operativo). "
-            "Los indicadores institucionales del PEI se definen en el **módulo 7**."
+            "Definí acá el **KPI de cada acción** (una sola vez). "
+            "El módulo 7 solo define frecuencia de evaluación e informes al comité."
         )
         render_survey_panel("acciones", payload)
         rows = payload.get("acciones") or []
@@ -630,22 +631,27 @@ def page_edit() -> None:
             },
         )
         payload["acciones"] = edited.fillna("").to_dict(orient="records")
+        sync_kpis_from_acciones(payload)
 
     elif mod == "rendimiento":
-        st.markdown("### Gestión y evaluación del rendimiento (Unidad 55)")
+        st.markdown("### Evaluación e informes (Unidad 55)")
         _module_help("rendimiento")
-        st.caption(
-            "Estos KPI miden el **resultado del PEI** (objetivos SMART). "
-            "No reemplazan el KPI de cada acción del módulo 6: se complementan."
-        )
+        kpis = sync_kpis_from_acciones(payload)
         render_survey_panel("rendimiento", payload)
+        st.markdown("#### Indicadores del plan (desde el plan de acción)")
+        if kpis:
+            for kpi in kpis:
+                st.markdown(f"- {kpi}")
+            st.caption(
+                "Estos KPI se toman automáticamente del **módulo 6 · Plan de acción**. "
+                "Para modificarlos, editá la columna KPI de esa tabla."
+            )
+        else:
+            st.warning(
+                "Todavía no hay KPI en el plan de acción. "
+                "Completá la columna **kpi** en el módulo 6."
+            )
         rend = payload.setdefault("rendimiento", {})
-        rend["kpis"] = st.text_area(
-            "Indicadores clave (KPI) vinculados a objetivos SMART",
-            rend.get("kpis", ""),
-            height=120,
-            placeholder="Uno por línea, alineados a los objetivos del módulo 5.",
-        )
         rend["frecuencia_evaluacion"] = st.text_area(
             "Frecuencia de evaluación",
             rend.get("frecuencia_evaluacion", ""),

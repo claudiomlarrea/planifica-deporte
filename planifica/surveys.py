@@ -74,16 +74,16 @@ SURVEY_MODULES: dict[str, dict[str, str]] = {
         ),
     },
     "rendimiento": {
-        "titulo": "Encuesta indicadores (KPI)",
+        "titulo": "Encuesta evaluación e informes",
         "para_que": (
-            "Saber qué resultados les importan a dirigentes y clubes para definir "
-            "indicadores útiles (no solo fáciles de medir)."
+            "Acordar con qué frecuencia se revisa el PEI y qué informes necesita "
+            "el comité (los KPI se toman del plan de acción)."
         ),
         "destinatarios_ej": "Comisión ejecutiva, tesorería, área técnica, responsables de sedes",
         "preguntas": (
-            "1. ¿Con qué 3 números deberían medir el éxito del PEI?\n"
-            "2. ¿Con qué frecuencia deberían informar avance (mensual / trimestral / anual)?\n"
-            "3. ¿Qué información necesitás recibir del plan?\n"
+            "1. ¿Con qué frecuencia deberían informar avance (mensual / trimestral / anual)?\n"
+            "2. ¿Qué información necesitás recibir del plan?\n"
+            "3. ¿Quién debería sintetizar el informe al comité?\n"
             "4. Rol / vínculo con la organización"
         ),
     },
