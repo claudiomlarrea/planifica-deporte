@@ -51,8 +51,9 @@ MODULE_HELP: dict[str, str] = {
         "Una encuesta sirve para acordar calendario de seguimiento."
     ),
     "personas": (
-        "El PEI se ejecuta con recursos humanos y voluntariado: roles, formación y retención. "
-        "Encuestá a staff y voluntarios para detectar necesidades y motivaciones."
+        "Definí con quién van a ejecutar el PEI: roles críticos (quiénes hacen falta), "
+        "brechas de formación (qué no saben hacer todavía) y cómo reclutar/ubicar por competencias. "
+        "Después, el voluntariado: necesidades, motivaciones, formación y reconocimiento."
     ),
     "proyectos": (
         "Opcional. Cuando el PEI ya tiene rumbo, podés registrar un primer proyecto "

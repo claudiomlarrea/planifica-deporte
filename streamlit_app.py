@@ -675,14 +675,84 @@ def page_edit() -> None:
         rrhh = payload.setdefault("rrhh", {})
         vol = payload.setdefault("voluntarios", {})
         st.markdown("#### Personal / recursos humanos")
-        rrhh["roles_clave"] = st.text_area("Roles críticos", rrhh.get("roles_clave", ""), height=100)
-        rrhh["brechas_formacion"] = st.text_area("Brechas de formación", rrhh.get("brechas_formacion", ""), height=100)
-        rrhh["reclutamiento"] = st.text_area("Reclutamiento y ubicación por competencias", rrhh.get("reclutamiento", ""), height=100)
+        st.caption(
+            "Definí **quién hace falta**, **qué no saben hacer todavía** y **cómo van a sumar gente**. "
+            "Pensá en personal pago y también en referentes clave de clubes."
+        )
+        rrhh["roles_clave"] = st.text_area(
+            "Roles críticos — ¿quiénes son indispensables para ejecutar el PEI?",
+            rrhh.get("roles_clave", ""),
+            height=100,
+            help=(
+                "Listá los puestos o funciones sin los cuales el plan no avanza: "
+                "dirección, área técnica, desarrollo de clubes, competencias, comunicación, tesorería, etc."
+            ),
+            placeholder=(
+                "Ej.: Director/a de planificación · Secretario/a técnico/a · "
+                "Coordinador/a de clubes · Responsable de competencias · Comunicación · Tesorero/a"
+            ),
+        )
+        rrhh["brechas_formacion"] = st.text_area(
+            "Brechas de formación — ¿qué capacidades faltan hoy?",
+            rrhh.get("brechas_formacion", ""),
+            height=100,
+            help=(
+                "Brecha = diferencia entre lo que la organización necesita y lo que el equipo sabe hacer hoy. "
+                "Una por línea: gestión de proyectos, indicadores, pedagogía, herramientas digitales, etc."
+            ),
+            placeholder=(
+                "Ej.:\n"
+                "Gestión de proyectos y PEI en dirigentes.\n"
+                "Uso de indicadores y tableros.\n"
+                "Formación pedagógica de entrenadores de iniciación."
+            ),
+        )
+        rrhh["reclutamiento"] = st.text_area(
+            "Reclutamiento y ubicación por competencias — ¿cómo van a incorporar y ubicar personas?",
+            rrhh.get("reclutamiento", ""),
+            height=100,
+            help=(
+                "Cómo van a buscar, seleccionar y asignar gente según competencias "
+                "(técnicas, liderazgo, comunicación), no solo por afinidad o disponibilidad."
+            ),
+            placeholder=(
+                "Ej.:\n"
+                "Perfiles por competencias (técnicas + liderazgo + comunicación).\n"
+                "Priorizar referentes de clubes con trayectoria formativa.\n"
+                "Convenios con universidades / tecnicaturas para pasantías."
+            ),
+        )
         st.markdown("#### Voluntarios")
-        vol["necesidades"] = st.text_area("Necesidades periódicas de voluntariado", vol.get("necesidades", ""), height=80)
-        vol["motivaciones"] = st.text_area("Motivaciones (servicio, familia, prestigio…)", vol.get("motivaciones", ""), height=80)
-        vol["formacion"] = st.text_area("Plan de formación", vol.get("formacion", ""), height=80)
-        vol["reconocimiento"] = st.text_area("Reconocimiento y retención", vol.get("reconocimiento", ""), height=80)
+        st.caption(
+            "En deporte el voluntariado sostiene eventos y escuelas. "
+            "Definí necesidades, motivaciones, formación y reconocimiento."
+        )
+        vol["necesidades"] = st.text_area(
+            "Necesidades periódicas — ¿para qué tareas necesitan voluntarios?",
+            vol.get("necesidades", ""),
+            height=80,
+            help="Roles de apoyo en torneos, escuelas, difusión, logística, etc.",
+            placeholder="Ej.: mesas de control · logística de sedes · difusión · acompañamiento en escuelas infantiles",
+        )
+        vol["motivaciones"] = st.text_area(
+            "Motivaciones — ¿por qué alguien colaboraría?",
+            vol.get("motivaciones", ""),
+            height=80,
+            help="Sirve para diseñar el llamado y la retención del voluntariado.",
+            placeholder="Ej.: servicio a la comunidad · familia en el deporte · prestigio · experiencia / CV",
+        )
+        vol["formacion"] = st.text_area(
+            "Plan de formación — ¿cómo los preparan antes de actuar?",
+            vol.get("formacion", ""),
+            height=80,
+            placeholder="Ej.: inducción de 2 h antes de cada evento · guía de roles · primeros auxilios",
+        )
+        vol["reconocimiento"] = st.text_area(
+            "Reconocimiento y retención — ¿cómo los cuidan y retienen?",
+            vol.get("reconocimiento", ""),
+            height=80,
+            placeholder="Ej.: acreditación · certificado anual · mención en asamblea · acceso a cursos",
+        )
 
     elif mod == "resumen":
         st.markdown("### Resumen del plan")
