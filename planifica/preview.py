@@ -29,7 +29,6 @@ def render_plan_preview(title: str, payload: dict[str, Any]) -> None:
     rend = payload.get("rendimiento") or {}
     rrhh = payload.get("rrhh") or {}
     vol = payload.get("voluntarios") or {}
-    tech = payload.get("tecnologia") or {}
     pei_titulo = pei.get("nombre") or title
     pais = org.get("pais") or org.get("region") or "—"
     provincia = org.get("provincia") or ""
@@ -111,14 +110,10 @@ def render_plan_preview(title: str, payload: dict[str, Any]) -> None:
     _block("Contribuye al PEI en", pg.get("vinculo_estrategico"))
     _block("Criterios de éxito", pg.get("criterios_exito"))
 
-    if (tech.get("notas_ia") or "").strip():
-        st.markdown("### 8 · Tecnología e IA")
-        _block("Notas", tech.get("notas_ia"))
-
     acts = payload.get("actividades") or []
     visibles = [a for a in acts if str(a.get("titulo") or "").strip()]
     if visibles:
-        st.markdown("### 9 · Actividades de ejecución")
+        st.markdown("### 8 · Actividades de ejecución")
         rows = []
         for a in visibles:
             rows.append(

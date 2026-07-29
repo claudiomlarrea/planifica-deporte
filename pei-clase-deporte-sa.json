@@ -106,10 +106,6 @@
       "reconocimiento": "Acreditación visible · certificado anual · mención en asamblea · acceso preferente a cursos · feedback post-evento."
     },
     "proyectos_cartera": [],
-    "tecnologia": {
-      "notas_ia": "Borradores de informes KPI y actas.\nResúmenes de DAFO y prioridades a partir de notas de reunión.\nAyuda para redactar comunicados de torneos y dossiers de patrocinio.\nRumbo Deporte como sistema vivo del PEI (no solo un Word estático).",
-      "herramientas": "Rumbo Deporte (PEI + actividades + tablero) · planillas compartidas · redes / web · eventual CRM de afiliados."
-    },
     "actividades": [
       {
         "id": "act_clase_1",

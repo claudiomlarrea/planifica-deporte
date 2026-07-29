@@ -43,7 +43,6 @@ def plan_to_html(title: str, payload: dict[str, Any]) -> str:
     rend = payload.get("rendimiento") or {}
     rrhh = payload.get("rrhh") or {}
     vol = payload.get("voluntarios") or {}
-    tech = payload.get("tecnologia") or {}
     acciones = payload.get("acciones") or []
 
     pais = org.get("pais") or org.get("region") or "—"
@@ -136,8 +135,6 @@ def plan_to_html(title: str, payload: dict[str, Any]) -> str:
       {_block("Objetivo", pg.get("objetivo"))}
       {_block("Contribuye al PEI en", pg.get("vinculo_estrategico"))}
       {_block("Criterios de éxito", pg.get("criterios_exito"))}
-      <h3>8 · Tecnología e IA</h3>
-      {_block("Notas", tech.get("notas_ia"))}
       <div class="pd-doc-footer">
         Primer PEI generado con Rumbo Deporte · Manual COI (2020), Unidades 53–57
       </div>
@@ -154,7 +151,6 @@ def plan_to_markdown(title: str, payload: dict[str, Any]) -> str:
     rend = payload.get("rendimiento") or {}
     rrhh = payload.get("rrhh") or {}
     vol = payload.get("voluntarios") or {}
-    tech = payload.get("tecnologia") or {}
     pei_titulo = pei.get("nombre") or title
 
     lines = [
@@ -227,10 +223,7 @@ def plan_to_markdown(title: str, payload: dict[str, Any]) -> str:
             _line("Contribuye al PEI en", pg.get("vinculo_estrategico", "")),
             _line("Criterios de éxito", pg.get("criterios_exito", "")),
             "",
-            "## 8. Tecnología e IA (opcional)",
-            _line("Notas", tech.get("notas_ia", "")),
-            "",
-            "## 9. Actividades de ejecución",
+            "## 8. Actividades de ejecución",
         ]
     )
     actividades = payload.get("actividades") or []
@@ -306,7 +299,6 @@ def plan_to_docx(title: str, payload: dict[str, Any]) -> bytes:
     rend = payload.get("rendimiento") or {}
     rrhh = payload.get("rrhh") or {}
     vol = payload.get("voluntarios") or {}
-    tech = payload.get("tecnologia") or {}
     pei_titulo = pei.get("nombre") or title
     pais = org.get("pais") or org.get("region") or "—"
     provincia = org.get("provincia") or ""
@@ -388,11 +380,7 @@ def plan_to_docx(title: str, payload: dict[str, Any]) -> bytes:
     _docx_para(doc, "Contribuye al PEI en", pg.get("vinculo_estrategico"))
     _docx_para(doc, "Criterios de éxito", pg.get("criterios_exito"))
 
-    if (tech.get("notas_ia") or "").strip():
-        doc.add_heading("8. Tecnología e IA", level=1)
-        _docx_para(doc, "Notas", tech.get("notas_ia"))
-
-    doc.add_heading("9. Actividades de ejecución", level=1)
+    doc.add_heading("8. Actividades de ejecución", level=1)
     n_act = 0
     for a in payload.get("actividades") or []:
         if not str(a.get("titulo") or "").strip():

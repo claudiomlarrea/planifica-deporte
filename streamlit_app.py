@@ -664,14 +664,6 @@ def page_edit() -> None:
         vol["motivaciones"] = st.text_area("Motivaciones (servicio, familia, prestigio…)", vol.get("motivaciones", ""), height=80)
         vol["formacion"] = st.text_area("Plan de formación", vol.get("formacion", ""), height=80)
         vol["reconocimiento"] = st.text_area("Reconocimiento y retención", vol.get("reconocimiento", ""), height=80)
-        tech = payload.setdefault("tecnologia", {})
-        st.markdown("#### Tecnología e IA (diferencial)")
-        tech["notas_ia"] = st.text_area(
-            "Usos concretos de IA en la gestión",
-            tech.get("notas_ia", ""),
-            height=80,
-            placeholder="Torneos, consultas, reportes KPI, borradores de proyectos…",
-        )
 
     elif mod == "resumen":
         st.markdown("### Resumen del plan")
