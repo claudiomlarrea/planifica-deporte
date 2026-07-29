@@ -29,11 +29,11 @@ BG_MAIN = "#D5E9E2"
 MODULE_LABELS = [
     "1 · Organización",
     "2 · Tu primer PEI",
-    "3 · Análisis DAFO",
+    "3 · Análisis FODA",
     "4 · Visión, misión y valores",
     "5 · Prioridades y objetivos",
     "6 · Plan de acción",
-    "7 · Indicadores (KPI)",
+    "7 · Evaluación e informes",
     "8 · Recursos humanos y voluntarios",
     "9 · Primer proyecto (opcional)",
     "10 · Resumen y exportación",

@@ -5,7 +5,7 @@ from __future__ import annotations
 MODULE_ORDER: list[tuple[str, str]] = [
     ("organizacion", "1 · Organización"),
     ("pei", "2 · Tu primer PEI"),
-    ("dafo", "3 · Análisis DAFO"),
+    ("foda", "3 · Análisis FODA"),
     ("cimientos", "4 · Visión, misión y valores"),
     ("prioridades", "5 · Prioridades y objetivos"),
     ("acciones", "6 · Plan de acción"),
@@ -26,9 +26,9 @@ MODULE_HELP: dict[str, str] = {
         "Acá nace el primer Plan Estratégico Institucional. "
         "Definí nombre, período y quién lo aprobará cuando esté listo (comité o asamblea)."
     ),
-    "dafo": (
+    "foda": (
         "Antes de decidir a dónde van: miren dónde están. "
-        "Fortalezas y debilidades internas; oportunidades y amenazas del entorno. "
+        "Fortalezas y debilidades internas; oportunidades y amenazas del entorno (FODA). "
         "Podés vincular un Google Form y compartirlo con los grupos que elija la comisión."
     ),
     "cimientos": (
@@ -76,8 +76,8 @@ MODULE_HELP: dict[str, str] = {
 HOW_IT_WORKS = """
 **Ciclo completo**
 
-1. **Armar el PEI** (módulos 1–10): organización, DAFO, visión, objetivos, acciones, KPI, recursos humanos y voluntarios.
-2. **Consultar** (opcional): en DAFO, visión/misión, prioridades, KPI y RR.HH. podés vincular Google Forms y compartir el enlace con los grupos que defina la comisión.
+1. **Armar el PEI** (módulos 1–10): organización, FODA, visión, objetivos, acciones, KPI, recursos humanos y voluntarios.
+2. **Consultar** (opcional): en FODA, visión/misión, prioridades, KPI y RR.HH. podés vincular Google Forms y compartir el enlace con los grupos que defina la comisión.
 3. **Ejecutar** (módulo 11): cargar actividades vinculadas a prioridades y objetivos del PEI.
 4. **Monitorear** (módulo 12): tablero con gráficos y tablas de avance (meta vs. real).
 

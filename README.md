@@ -28,7 +28,7 @@ streamlit run app.py
 3. Completar módulos 1–10 del PEI.
 4. **Módulo 11**: actividades de ejecución vinculadas a prioridades/objetivos.
 5. **Módulo 12**: tablero de monitoreo (avance, estados, meta vs. real).
-6. En DAFO, visión/misión, prioridades, KPI y recursos humanos: vincular Google Forms y compartir el enlace con los grupos que defina la comisión.
+6. En FODA, visión/misión, prioridades, KPI y recursos humanos: vincular Google Forms y compartir el enlace con los grupos que defina la comisión.
 7. Exportar Word / Markdown / JSON desde Resumen.
 
 ## Persistencia en Streamlit Cloud

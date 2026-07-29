@@ -9,10 +9,10 @@ import streamlit as st
 
 # Apartados donde la comisión suele consultar a socios, clubes o voluntarios.
 SURVEY_MODULES: dict[str, dict[str, str]] = {
-    "dafo": {
-        "titulo": "Encuesta DAFO",
+    "foda": {
+        "titulo": "Encuesta FODA",
         "para_que": (
-            "Reunir fortalezas, debilidades, oportunidades y amenazas vistas por "
+            "Reunir fortalezas, oportunidades, debilidades y amenazas vistas por "
             "dirigentes, entrenadores, clubes afiliados y socios."
         ),
         "destinatarios_ej": "Comisión directiva, secretarios de clubes, cuerpo técnico, socios activos",
@@ -20,8 +20,8 @@ SURVEY_MODULES: dict[str, dict[str, str]] = {
             "1. ¿Cuál es tu rol o vínculo con la organización? "
             "(dirigente, entrenador, socio, voluntario, familiar, referente de club, otro)\n"
             "2. FORTALEZAS — ¿Cuáles son las principales fortalezas internas? (2 a 5 ideas)\n"
-            "3. DEBILIDADES — ¿Qué debilidades internas deberían priorizarse?\n"
-            "4. OPORTUNIDADES — ¿Qué oportunidades del entorno conviene aprovechar?\n"
+            "3. OPORTUNIDADES — ¿Qué oportunidades del entorno conviene aprovechar?\n"
+            "4. DEBILIDADES — ¿Qué debilidades internas deberían priorizarse?\n"
             "5. AMENAZAS — ¿Qué amenazas externas preocupan más?\n"
             "6. (Opcional) Si tuvieras que elegir UNA prioridad para los próximos 2 años, ¿cuál sería?"
         ),
@@ -141,6 +141,10 @@ def is_plausible_form_url(url: str) -> bool:
 
 def get_survey(payload: dict[str, Any], module_key: str) -> dict[str, str]:
     encuestas = payload.setdefault("encuestas", {})
+    if module_key == "foda" and "dafo" in encuestas and "foda" not in encuestas:
+        encuestas["foda"] = encuestas.pop("dafo")
+    elif module_key == "foda" and "dafo" in encuestas:
+        encuestas.pop("dafo", None)
     entry = encuestas.setdefault(module_key, empty_survey_entry())
     for k, v in empty_survey_entry().items():
         entry.setdefault(k, v)

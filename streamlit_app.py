@@ -42,7 +42,7 @@ from planifica.preview import render_plan_preview
 from planifica.progress import module_completion, total_completion
 from planifica.surveys import list_configured_surveys, render_survey_panel
 from planifica.theme import inject_theme, metric_card, render_header
-from planifica.utils import demo_plan_payload, empty_plan_payload, generate_id
+from planifica.utils import demo_plan_payload, empty_plan_payload, ensure_foda, generate_id
 
 st.set_page_config(
     page_title="Rumbo Deporte",
@@ -74,6 +74,9 @@ def ensure_state() -> None:
     for key, val in defaults.items():
         if key not in st.session_state:
             st.session_state[key] = val
+    # Compatibilidad: módulo renombrado DAFO → FODA
+    if st.session_state.get("edit_module") == "dafo":
+        st.session_state.edit_module = "foda"
 
 
 @st.cache_resource
@@ -565,18 +568,18 @@ def page_edit() -> None:
         pq["partes_interesadas"] = st.checkbox("¿Participación de partes interesadas?", pq.get("partes_interesadas", False))
         pq["riesgos"] = st.checkbox("¿Identificados riesgos y respuesta?", pq.get("riesgos", False))
 
-    elif mod == "dafo":
-        st.markdown("### Análisis DAFO")
-        _module_help("dafo")
-        render_survey_panel("dafo", payload)
-        dafo = payload.setdefault("dafo", {})
+    elif mod == "foda":
+        st.markdown("### Análisis FODA")
+        _module_help("foda")
+        render_survey_panel("foda", payload)
+        foda = ensure_foda(payload)
         c1, c2 = st.columns(2)
         with c1:
-            dafo["fortalezas"] = st.text_area("Fortalezas", dafo.get("fortalezas", ""), height=160)
-            dafo["oportunidades"] = st.text_area("Oportunidades", dafo.get("oportunidades", ""), height=160)
+            foda["fortalezas"] = st.text_area("Fortalezas", foda.get("fortalezas", ""), height=160)
+            foda["oportunidades"] = st.text_area("Oportunidades", foda.get("oportunidades", ""), height=160)
         with c2:
-            dafo["debilidades"] = st.text_area("Debilidades", dafo.get("debilidades", ""), height=160)
-            dafo["amenazas"] = st.text_area("Amenazas", dafo.get("amenazas", ""), height=160)
+            foda["debilidades"] = st.text_area("Debilidades", foda.get("debilidades", ""), height=160)
+            foda["amenazas"] = st.text_area("Amenazas", foda.get("amenazas", ""), height=160)
 
     elif mod == "cimientos":
         st.markdown("### Cimientos estratégicos")

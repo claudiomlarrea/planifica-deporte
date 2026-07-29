@@ -14,6 +14,23 @@ def generate_id(prefix: str = "pln") -> str:
     return f"{prefix}_{suffix}"
 
 
+def ensure_foda(payload: dict) -> dict:
+    """Bloque FODA; migra la clave antigua `dafo` si existía."""
+    block = payload.get("foda")
+    if not isinstance(block, dict) or not any(str(v or "").strip() for v in block.values()):
+        legacy = payload.get("dafo")
+        if isinstance(legacy, dict) and any(str(v or "").strip() for v in legacy.values()):
+            block = dict(legacy)
+    if not isinstance(block, dict):
+        block = {"fortalezas": "", "debilidades": "", "oportunidades": "", "amenazas": ""}
+    for key in ("fortalezas", "debilidades", "oportunidades", "amenazas"):
+        block.setdefault(key, "")
+    payload["foda"] = block
+    if "dafo" in payload:
+        del payload["dafo"]
+    return block
+
+
 def empty_plan_payload() -> dict:
     return {
         "org": {
@@ -51,7 +68,7 @@ def empty_plan_payload() -> dict:
             "partes_interesadas": False,
             "riesgos": False,
         },
-        "dafo": {"fortalezas": "", "debilidades": "", "oportunidades": "", "amenazas": ""},
+        "foda": {"fortalezas": "", "debilidades": "", "oportunidades": "", "amenazas": ""},
         "cimientos": {"vision": "", "mision": "", "valores": ""},
         "prioridades": "",
         "objetivos_smart": "",
@@ -108,10 +125,10 @@ def demo_plan_payload() -> dict:
             "criterios_exito": "Nº de judocas, clubes participantes, satisfacción.",
         }
     )
-    data["dafo"]["fortalezas"] = "Buena imagen pública\nVoluntarios comprometidos\nRelación con clubes"
-    data["dafo"]["debilidades"] = "Poca formación formal de entrenadores\nBase financiera limitada"
-    data["dafo"]["oportunidades"] = "Programas escolares\nPatrocinio local"
-    data["dafo"]["amenazas"] = "Competencia de otros deportes\nRotación de dirigentes"
+    data["foda"]["fortalezas"] = "Buena imagen pública\nVoluntarios comprometidos\nRelación con clubes"
+    data["foda"]["debilidades"] = "Poca formación formal de entrenadores\nBase financiera limitada"
+    data["foda"]["oportunidades"] = "Programas escolares\nPatrocinio local"
+    data["foda"]["amenazas"] = "Competencia de otros deportes\nRotación de dirigentes"
     data["cimientos"]["vision"] = "Ser referencia nacional en desarrollo del judo base."
     data["cimientos"]["mision"] = (
         "Promover el judo con valores olímpicos, formar entrenadores y "

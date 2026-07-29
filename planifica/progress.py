@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from planifica.utils import ensure_foda
+
 
 def _filled(value: Any) -> bool:
     if value is None:
@@ -24,7 +26,7 @@ def module_completion(payload: dict) -> dict[str, float]:
     pei = payload.get("pei") or {}
     pg = payload.get("proyecto_guia") or {}
     pq = payload.get("proyecto_preguntas") or {}
-    dafo = payload.get("dafo") or {}
+    dafo = ensure_foda(payload)
     cim = payload.get("cimientos") or {}
     rend = payload.get("rendimiento") or {}
     rrhh = payload.get("rrhh") or {}
@@ -50,7 +52,7 @@ def module_completion(payload: dict) -> dict[str, float]:
             + check_ratio
         )
         / 2,
-        "dafo": ratio(["fortalezas", "debilidades", "oportunidades", "amenazas"], dafo),
+        "foda": ratio(["fortalezas", "debilidades", "oportunidades", "amenazas"], dafo),
         "cimientos": ratio(["vision", "mision", "valores"], cim),
         "prioridades": 1.0
         if _filled(payload.get("prioridades")) and _filled(payload.get("objetivos_smart"))

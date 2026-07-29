@@ -1,5 +1,9 @@
 /**
- * Rumbo Deporte — completar preguntas del formulario FODA / DAFO
+ * Rumbo Deporte — completar preguntas del formulario FODA
+ * https://docs.google.com/forms/d/1De7XbHgphfoUvkHd5zbmMjs3Llb-mr_RafqEndhRU6Q/edit
+ *
+ * Ejecutar: buildRumboFodaForm
+ * Pegar viewform en Rumbo Deporte → módulo 3 · Análisis FODA
  *
  * Cómo usarlo (con la cuenta dueña del formulario, ej. investigacion@uccuyo.edu.ar):
  * 1. Abrí https://script.google.com
@@ -16,7 +20,7 @@ function buildRumboFodaForm() {
 
   form.setTitle("Rumbo Deporte FODA");
   form.setDescription(
-    "Encuesta para reunir aportes al análisis DAFO / FODA del Plan Estratégico Institucional (PEI).\n" +
+    "Encuesta para reunir aportes al análisis FODA del Plan Estratégico Institucional (PEI).\n" +
       "Respondé con ejemplos concretos de tu club, federación o asociación.\n" +
       "La comisión sintetizará las respuestas en Rumbo Deporte."
   );

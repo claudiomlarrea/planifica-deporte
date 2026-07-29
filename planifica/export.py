@@ -5,6 +5,7 @@ import json
 from typing import Any
 
 from planifica.surveys import list_configured_surveys
+from planifica.utils import ensure_foda
 
 
 def _line(label: str, value: str) -> str:
@@ -38,7 +39,7 @@ def plan_to_html(title: str, payload: dict[str, Any]) -> str:
     org = payload.get("org") or {}
     pei = payload.get("pei") or {}
     pg = payload.get("proyecto_guia") or {}
-    dafo = payload.get("dafo") or {}
+    dafo = ensure_foda(payload)
     cim = payload.get("cimientos") or {}
     rend = payload.get("rendimiento") or {}
     rrhh = payload.get("rrhh") or {}
@@ -102,7 +103,7 @@ def plan_to_html(title: str, payload: dict[str, Any]) -> str:
       </div>
       {meta}
       {pei_block}
-      <h3>1 · Análisis DAFO</h3>
+      <h3>1 · Análisis FODA</h3>
       <div class="pd-grid-2">
         {_block("Fortalezas", dafo.get("fortalezas"))}
         {_block("Debilidades", dafo.get("debilidades"))}
@@ -146,7 +147,7 @@ def plan_to_markdown(title: str, payload: dict[str, Any]) -> str:
     org = payload.get("org") or {}
     pei = payload.get("pei") or {}
     pg = payload.get("proyecto_guia") or {}
-    dafo = payload.get("dafo") or {}
+    dafo = ensure_foda(payload)
     cim = payload.get("cimientos") or {}
     rend = payload.get("rendimiento") or {}
     rrhh = payload.get("rrhh") or {}
@@ -171,7 +172,7 @@ def plan_to_markdown(title: str, payload: dict[str, Any]) -> str:
         "",
         "---",
         "",
-        "## 1. Análisis DAFO",
+        "## 1. Análisis FODA",
         _line("Fortalezas", dafo.get("fortalezas", "")),
         _line("Debilidades", dafo.get("debilidades", "")),
         _line("Oportunidades", dafo.get("oportunidades", "")),
@@ -294,7 +295,7 @@ def plan_to_docx(title: str, payload: dict[str, Any]) -> bytes:
     org = payload.get("org") or {}
     pei = payload.get("pei") or {}
     pg = payload.get("proyecto_guia") or {}
-    dafo = payload.get("dafo") or {}
+    dafo = ensure_foda(payload)
     cim = payload.get("cimientos") or {}
     rend = payload.get("rendimiento") or {}
     rrhh = payload.get("rrhh") or {}
@@ -328,7 +329,7 @@ def plan_to_docx(title: str, payload: dict[str, Any]) -> bytes:
     _docx_para(doc, "Quién lo aprobará", pei.get("aprobado_por"))
     _docx_para(doc, "Fecha de aprobación", pei.get("fecha_aprobacion"))
 
-    doc.add_heading("1. Análisis DAFO", level=1)
+    doc.add_heading("1. Análisis FODA", level=1)
     _docx_para(doc, "Fortalezas", dafo.get("fortalezas"))
     _docx_para(doc, "Debilidades", dafo.get("debilidades"))
     _docx_para(doc, "Oportunidades", dafo.get("oportunidades"))

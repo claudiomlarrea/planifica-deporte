@@ -8,6 +8,7 @@ import pandas as pd
 import streamlit as st
 
 from planifica.surveys import list_configured_surveys
+from planifica.utils import ensure_foda
 
 
 def _txt(value: Any) -> str:
@@ -24,7 +25,7 @@ def render_plan_preview(title: str, payload: dict[str, Any]) -> None:
     org = payload.get("org") or {}
     pei = payload.get("pei") or {}
     pg = payload.get("proyecto_guia") or {}
-    dafo = payload.get("dafo") or {}
+    dafo = ensure_foda(payload)
     cim = payload.get("cimientos") or {}
     rend = payload.get("rendimiento") or {}
     rrhh = payload.get("rrhh") or {}
@@ -50,7 +51,7 @@ def render_plan_preview(title: str, payload: dict[str, Any]) -> None:
     _block("Quién lo aprobará", pei.get("aprobado_por"))
     _block("Fecha de aprobación", pei.get("fecha_aprobacion"))
 
-    st.markdown("### 1 · Análisis DAFO")
+    st.markdown("### 1 · Análisis FODA")
     c1, c2 = st.columns(2)
     with c1:
         _block("Fortalezas", dafo.get("fortalezas"))
