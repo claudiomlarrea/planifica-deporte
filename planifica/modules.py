@@ -64,8 +64,9 @@ MODULE_HELP: dict[str, str] = {
         "Markdown o JSON de respaldo."
     ),
     "actividades": (
-        "Con el PEI armado, cargá actividades de ejecución vinculadas a prioridades y objetivos. "
-        "Solo las que no están en Borrador alimentan el tablero."
+        "Acá se cargan las tareas concretas de ejecución. "
+        "Meta y avance alimentan el gráfico del tablero (lo esperado vs. lo logrado). "
+        "Solo las que no estén en Borrador aparecen en el monitoreo."
     ),
     "tablero": (
         "Tablero de monitoreo del PEI: avance global, actividades por estado y prioridad, "

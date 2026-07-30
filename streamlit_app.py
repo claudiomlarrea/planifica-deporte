@@ -816,7 +816,9 @@ def page_edit() -> None:
         st.markdown("### Actividades de ejecución del PEI")
         _module_help("actividades")
         st.info(
-            "Cargá actividades concretas vinculadas a prioridades y objetivos. "
+            "Cada actividad es una tarea concreta del plan. "
+            "**Meta** = lo que se quiere lograr · **Avance** = lo ya logrado. "
+            "Eso se compara en el **tablero** (módulo 12). "
             "Los **Borradores** no aparecen en el tablero hasta cambiar de estado."
         )
         acts = payload.setdefault("actividades", [])
@@ -827,19 +829,46 @@ def page_edit() -> None:
 
         with st.form("nueva_actividad", clear_on_submit=True):
             st.markdown("#### Nueva actividad")
-            titulo = st.text_input("Título de la actividad")
+            titulo = st.text_input(
+                "Título de la actividad",
+                help="Nombre corto de la tarea a ejecutar (ej.: Abrir 6 escuelas en el conurbano).",
+            )
             c1, c2 = st.columns(2)
             with c1:
-                prioridad = st.selectbox("Prioridad del PEI", prios)
-                objetivo = st.selectbox("Objetivo SMART", objs)
-                responsable = st.text_input("Responsable")
-                periodo = st.text_input("Período", placeholder="2026-Q1 / 2026-S1")
+                prioridad = st.selectbox(
+                    "Prioridad del PEI",
+                    prios,
+                    help="A qué prioridad estratégica del módulo 5 responde esta actividad.",
+                )
+                objetivo = st.selectbox(
+                    "Objetivo SMART",
+                    objs,
+                    help="A qué objetivo medible contribuye esta actividad.",
+                )
+                responsable = st.text_input(
+                    "Responsable",
+                    help="Quién lidera o responde por esta actividad.",
+                )
+                periodo = st.text_input(
+                    "Período",
+                    placeholder="2026-Q1 / 2026-S1",
+                    help="Cuándo se ejecuta (trimestre, semestre o año).",
+                )
             with c2:
-                estado = st.selectbox("Estado", ESTADOS, index=1)
+                estado = st.selectbox(
+                    "Estado",
+                    ESTADOS,
+                    index=1,
+                    help=(
+                        "Borrador: no entra al tablero. "
+                        "Planificada / En curso / Cumplida: sí se monitorean."
+                    ),
+                )
                 if acciones_pei:
                     accion_pei = st.selectbox(
                         "Acción del plan (opcional)",
                         ["—"] + acciones_pei,
+                        help="Vinculá esta actividad a una fila del plan de acción (módulo 6).",
                     )
                 else:
                     st.caption(
@@ -849,33 +878,67 @@ def page_edit() -> None:
                     accion_pei = "—"
                 if kpis:
                     kpi_sel = st.selectbox(
-                        "KPI / indicador",
+                        "KPI / indicador a medir",
                         ["—"] + kpis + ["Otro (escribir abajo)"],
+                        help="Qué número vas a seguir para saber si esta actividad avanza.",
                     )
                 else:
                     kpi_sel = "Otro (escribir abajo)"
                     st.caption(
-                        "Todavía no hay KPI en el módulo 7 ni en el plan de acción. "
-                        "Podés escribir uno abajo o cargarlos primero."
+                        "Todavía no hay KPI en el plan de acción. "
+                        "Podés escribir uno abajo o cargarlos primero en el módulo 6."
                     )
-                unidad = st.text_input("Unidad", placeholder="afiliados, escuelas, torneos…")
+                unidad = st.text_input(
+                    "Unidad de medida",
+                    placeholder="escuelas, personas, eventos, convenios…",
+                    help="En qué se cuenta el KPI (ej.: escuelas, entrenadores, informes).",
+                )
             kpi_otro = st.text_input(
-                "KPI personalizado (si elegiste «Otro» o no hay lista)",
-                placeholder="Ej.: Escuelas activas",
+                "KPI personalizado (solo si elegiste «Otro» o no hay lista)",
+                placeholder="Ej.: Escuelas de iniciación activas",
+                help="Escribí el nombre del indicador si no estaba en la lista.",
             )
             if kpi_sel == "Otro (escribir abajo)" or kpi_sel == "—":
                 kpi_nombre = kpi_otro.strip()
             else:
                 kpi_nombre = kpi_sel
+            st.markdown("##### Seguimiento numérico (alimenta el tablero)")
+            st.caption(
+                "Ejemplo: Meta = 6 escuelas · Avance actual = 3 → el tablero muestra 50%."
+            )
             c3, c4, c5 = st.columns(3)
             with c3:
-                meta = st.number_input("Meta", min_value=0.0, value=0.0, step=1.0)
+                meta = st.number_input(
+                    "Meta (resultado esperado)",
+                    min_value=0.0,
+                    value=0.0,
+                    step=1.0,
+                    help="Cantidad que se quiere alcanzar con esta actividad.",
+                )
             with c4:
-                avance = st.number_input("Avance actual", min_value=0.0, value=0.0, step=1.0)
+                avance = st.number_input(
+                    "Avance actual (resultado logrado)",
+                    min_value=0.0,
+                    value=0.0,
+                    step=1.0,
+                    help="Cuánto se logró hasta ahora. Se actualiza a medida que avanza la actividad.",
+                )
             with c5:
-                fecha_inicio = st.text_input("Inicio", placeholder="AAAA-MM-DD")
-            fecha_fin = st.text_input("Fin", placeholder="AAAA-MM-DD")
-            notas = st.text_area("Notas", height=70)
+                fecha_inicio = st.text_input(
+                    "Fecha de inicio",
+                    placeholder="AAAA-MM-DD",
+                    help="Cuándo empieza (o empezó) la actividad.",
+                )
+            fecha_fin = st.text_input(
+                "Fecha de fin prevista",
+                placeholder="AAAA-MM-DD",
+                help="Plazo límite o fecha de cierre prevista.",
+            )
+            notas = st.text_area(
+                "Notas",
+                height=70,
+                help="Observaciones, riesgos o comentarios para el seguimiento.",
+            )
             if st.form_submit_button("Agregar actividad", type="primary"):
                 if not titulo.strip():
                     st.error("Indicá un título.")
